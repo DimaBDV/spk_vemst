@@ -21,9 +21,11 @@
 </head>
 <body>
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <div class="container">
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
+        <div class="container-fluid">
             <a class="navbar-brand" href="{{ url('/') }}">
+                {{--TODO: выпросить адекватное лого, а то у этого огромные поля--}}
+                {{--<img src="{{ asset('storage/img/logo.png') }}" alt="">--}}
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -43,11 +45,14 @@
                     <!-- Authentication Links -->
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ route('login') }}"><i
+                                        class="fas fa-user"></i> {{ __('Войти') }}</a>
                         </li>
                         @if (Route::has('register'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+
+                                <a class="nav-link" href="{{ route('register') }}"><i
+                                            class="fas fa-child"></i> {{ __('Регистрация') }}</a>
                             </li>
                         @endif
                     @else

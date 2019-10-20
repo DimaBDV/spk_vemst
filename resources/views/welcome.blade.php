@@ -72,7 +72,7 @@
     </style>
 </head>
 <body>
-<div class="flex-center position-ref full-height">
+<div class="flex-center position-ref full-height overflow-auto">
     <div class="container">
         <div class="row justify-content-center align-items-center">
             <div class="col-12 col-sm-6">

@@ -50,9 +50,34 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'regex:/(.*)@vemst\.ru$/i'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            'fathers_name' => ['required', 'string', 'max:255'],
+            'unit' => ['required', 'string', 'max:255']
+        ],
+//        message
+            [
+                'name.required' => 'Обязательное поле.',
+                'name.string' => 'Данныеы в поле должны быть тексом.',
+
+                'email.required' => 'Обязательное поле.',
+                'email.string' => 'Данныеы в поле должны быть тексом.',
+                'email.email' => 'Ожидался E-mail адрес',
+                'email.unique' => 'Сожалеем, но данный адрес уже зарегистрирован.',
+                'email.regex' => 'E-mail должен быть внутренним - @vemst.ru',
+
+                'password.required' => 'Обязательное поле.',
+                'password.string' => 'Данныеы в поле должны быть тексом.',
+                'password.min' => 'Пароль должен содержать не менее :min символов.',
+                'password.confirmed' => 'Пароли должны совпадать',
+
+                'fathers_name.required' => 'Обязательное поле.',
+                'fathers_name.string' => 'Данныеы в поле должны быть тексом.',
+
+                'unit.required' => 'Обязательное поле.',
+                'unit.string' => 'Данныеы в поле должны быть тексом.',
+            ]);
+
     }
 
     /**
@@ -67,6 +92,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'fathers_name' => $data['fathers_name'],
+            'unit' => $data['unit']
         ]);
     }
 }

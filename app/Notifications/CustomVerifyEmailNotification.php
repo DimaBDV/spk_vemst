@@ -55,14 +55,14 @@ class CustomVerifyEmailNotification extends Notification //implements ShouldQueu
         }
 
         return (new MailMessage)
-            ->greeting('Здравствуйте ' . $this->user['Name'])
+            ->greeting('Здравствуйте, ' . $this->user['Name'])
             ->subject(Lang::get('Подтверждение E-mail адреса'))
-            ->line(Lang::get('Только что выш E-mail адрес был использован для регистрации в сервисе ' . env('APP_NAME')))
+            ->line(Lang::get('Только что ваш E-mail адрес был использован для регистрации в сервисе ' . env('APP_NAME')))
             ->line('Проверьте Ваши данные:')
             ->line('Имя Отчество - ' . $this->user['Name'])
             ->line(Lang::get('Подразделение - ' . $this->user['Unit']))
-            ->line(Lang::get('E-mail указанный при регистрации - ' . $this->user['Email']))
-            ->line(Lang::get('Пожалуйста нажмите на кнопку чтобы подтвердить.'))
+            ->line(Lang::get('E-mail, указанный при регистрации - ' . $this->user['Email']))
+            ->line(Lang::get('Пожалуйста нажмите кнопку ниже для активации аккаунта.'))
             ->action(Lang::get('Подтвердить E-mail'), $verificationUrl)
             ->line(Lang::get('Если вы не создавали аккаунт, просто закройте данное письмо, ничего нажимать не требуется.'));
     }

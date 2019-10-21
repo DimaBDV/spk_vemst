@@ -36,4 +36,12 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Переопределение метода для отправки E-mail уведомления о подтверждении пароля
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new Notifications\CustomVerifyEmailNotification);
+    }
 }

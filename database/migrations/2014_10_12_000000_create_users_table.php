@@ -6,6 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
+
+    /**
+     * Группы пользователей
+     * @var array
+     */
+    protected $group = [
+        'U', // Default
+        'M', //Moderator
+        'A', //Admin
+        'B', //Banned
+    ];
+
     /**
      * Run the migrations.
      *
@@ -24,6 +36,8 @@ class CreateUsersTable extends Migration
             $table->string('name');         // Имя
             $table->string('fathers_name'); // Отчество
             $table->string('unit');         // Подразделение
+
+            $table->enum('group', $this->group)->default($this->group[0]);
         });
     }
 

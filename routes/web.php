@@ -21,3 +21,9 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/test', function (){
+    return view('user.test');
+})->middleware(['auth', 'verified']);
+
+Route::post('/upload', 'Support\FileController@store')->name('upload.file');

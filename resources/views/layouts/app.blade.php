@@ -25,7 +25,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{--TODO: выпросить адекватное лого, а то у этого огромные поля--}}
-                {{--<img src="{{ asset('storage/img/logo.png') }}" alt="">--}}
+                {{--<img src="{{ asset('img/logo.png') }}" alt="">--}}
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

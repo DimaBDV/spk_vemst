@@ -27,7 +27,7 @@
 </div>
 <style>
     body {
-        background: url( {{ asset('storage/img/welcomeBG.jpg') }} ) no-repeat center center fixed;
+        background: url( {{ asset('img/welcomeBG.jpg') }} ) no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         background-size: cover;

@@ -85,7 +85,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col  flex-center">
                                         <div class="px-1 py-1">
-                                            <img class="flex" src="{{ asset('storage/img/logo.png') }}" alt=""
+                                            <img class="flex" src="{{ asset('img/logo.png') }}" alt=""
                                                  style="width: 100px;
                                             background-color: #293e59;
                                             border-radius: 1rem;

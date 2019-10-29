@@ -5,4 +5,3 @@
         <button type="submit">Отправить</button>
     {{ Form::close() }}
 </div>
-

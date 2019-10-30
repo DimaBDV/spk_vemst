@@ -13,7 +13,7 @@ class WelcomeController extends Controller
      */
     public function index(){
         if(Auth::check()){
-            return redirect('home');
+            return redirect('offer');
         }
         return redirect('login');
     }

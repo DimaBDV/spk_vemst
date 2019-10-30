@@ -1,19 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
+    <div class="container-fluid">
+        @include('notify.notify')
+        <div class="row">
 
-                    <div class="card-body">
-                        @include('notify.notify')
+            {{-- Левая колонка, предложить новость --}}
+            <div class="col-12 col-md-8 py-1">
+                <div class="container-fluid">
+                    @include('offer.modules.new')
+                </div>
+            </div>
 
-                        You are logged in!
-                    </div>
+            {{-- Правая колонка, список предложенных но ещё не выполненных --}}
+            <div class="col-12 col-md-4 py-1">
+                <div class="container-fluid">
+                    @include('offer.modules.history')
                 </div>
             </div>
         </div>
+
     </div>
 @endsection

@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <meta name="theme-color" content="#101924" />
 </head>
 <body>
 <div id="app">

@@ -8,7 +8,7 @@
                 Предложить
             </div>
         </div>
-        <hr/>
+        <div class="dropdown-divider"></div>
 
         {{-- Тело --}}
 

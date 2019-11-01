@@ -3655,6 +3655,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -3666,10 +3685,13 @@ __webpack_require__.r(__webpack_exports__);
       section: {
         news: 'Новости',
         newsToggled: false,
+        newsDescription: 'Данный раздел предназначен для предложения новостей.',
         schedule: 'Расписание',
         scheduleToggled: false,
+        scheduleDescription: 'Данный раздел предназначен для изменений в расписании, по отделениям "Очное" и "Заочное".',
         docs: 'Документы',
         docsToggled: false,
+        docsDescription: 'Данный раздел предназначен для документации, положений, РУМО и т.д. Заполняя данный раздел пожалуйста укажите ссылку страницы на которой требуется изменить/добавить документ.',
         toggled: false
       },
 
@@ -39101,6 +39123,7 @@ var render = function() {
                   click: function($event) {
                     _vm.formData.section = _vm.section.docs
                     _vm.section.toggled = true
+                    _vm.section.docsToggled = true
                   }
                 }
               },
@@ -39117,6 +39140,7 @@ var render = function() {
                   click: function($event) {
                     _vm.formData.section = _vm.section.news
                     _vm.section.toggled = true
+                    _vm.section.newsToggled = true
                   }
                 }
               },
@@ -39133,6 +39157,7 @@ var render = function() {
                   click: function($event) {
                     _vm.formData.section = _vm.section.schedule
                     _vm.section.toggled = true
+                    _vm.section.scheduleToggled = true
                   }
                 }
               },
@@ -39144,10 +39169,75 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "dropdown-divider" }),
     _vm._v(" "),
+    _vm.section.toggled
+      ? _c(
+          "div",
+          {
+            staticClass: "alert alert-warning alert-dismissible fade show",
+            attrs: { role: "alert" }
+          },
+          [
+            _c("h4", { staticClass: "alert-heading" }, [
+              _vm._v("Описание раздела.")
+            ]),
+            _vm._v(" "),
+            _vm.section.newsToggled
+              ? _c("p", [_vm._v(_vm._s(_vm.section.newsDescription))])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.section.scheduleToggled
+              ? _c("p", [_vm._v(_vm._s(_vm.section.scheduleDescription))])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.section.docsToggled
+              ? _c("p", [_vm._v(_vm._s(_vm.section.docsDescription))])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1)
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "container-fluid" })
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "mb-0" }, [
+      _vm._v(
+        "Просим серьёзно отнестить к вышеуказанным требованиям.\n            "
+      ),
+      _c("br"),
+      _vm._v(
+        "\n            Это облегчит работу каждой из сторон и улучшит продуктивность работы.\n        "
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -51447,14 +51537,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************!*\
   !*** ./resources/js/components/offerForm.vue ***!
   \***********************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _offerForm_vue_vue_type_template_id_545be785___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./offerForm.vue?vue&type=template&id=545be785& */ "./resources/js/components/offerForm.vue?vue&type=template&id=545be785&");
 /* harmony import */ var _offerForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./offerForm.vue?vue&type=script&lang=js& */ "./resources/js/components/offerForm.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _offerForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _offerForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -51484,7 +51575,7 @@ component.options.__file = "resources/js/components/offerForm.vue"
 /*!************************************************************************!*\
   !*** ./resources/js/components/offerForm.vue?vue&type=script&lang=js& ***!
   \************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

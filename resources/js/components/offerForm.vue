@@ -66,7 +66,7 @@
                     <label for="ThemeInput"> <i class="fas fa-bullhorn"></i> Тема</label>
 
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="ThemeInput" aria-describedby="ThemeHelp" placeholder="Тема новости" v-model="formData.theme">
+                        <input type="text" class="form-control" id="ThemeInput" aria-describedby="ThemeHelp" placeholder="Тема новости" v-model="formData.theme" required>
                         <div class="input-group-append">
                             <button class="btn btn-outline-danger" type="button" id="button-news_trash" @click="formData.theme = '' ">
                                 <i class="fas fa-trash"></i>
@@ -80,7 +80,7 @@
                     <label for="MainTextTextarea"><i class="fas fa-edit"></i> Текст новости</label>
 
                     <div class="input-group mb-3">
-                        <textarea class="form-control" id="MainTextTextarea" aria-describedby="TextAreaHelp" rows="3" v-model="formData.mainText"></textarea>
+                        <textarea class="form-control" id="MainTextTextarea" aria-describedby="TextAreaHelp" rows="3" v-model="formData.mainText" required></textarea>
                         <div class="input-group-append">
                             <button class="btn btn-outline-danger" type="button" id="button-newsTextArea_trash" @click="formData.mainText = '' ">
                                 <i class="fas fa-trash"></i>
@@ -100,7 +100,7 @@
                     <label for="SectionInput"> <i class="fas fa-clipboard"></i> Раздел сайта</label>
 
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="SectionInput" aria-describedby="SectionHelp" placeholder="К какому разделу относится документ" v-model="formData.theme">
+                        <input type="text" class="form-control" id="SectionInput" aria-describedby="SectionHelp" placeholder="К какому разделу относится документ" v-model="formData.theme" required>
                         <div class="input-group-append">
                             <button class="btn btn-outline-danger" type="button" id="button-section_trash" @click="formData.theme = '' ">
                                 <i class="fas fa-trash"></i>
@@ -114,7 +114,7 @@
                     <label for="UrlInput"><i class="fas fa-link"></i> URL</label>
 
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="UrlInput" aria-describedby="UrlHelp" placeholder="http://vemst.ru/..." v-model="formData.url">
+                        <input type="url" pattern="http://vemst.ru/*" class="form-control" id="UrlInput" aria-describedby="UrlHelp" placeholder="http://vemst.ru/..." v-model="formData.url" required>
                         <div class="input-group-append">
                             <button class="btn btn-outline-danger" type="button" id="button-docsUrl_trash" @click="formData.url = '' ">
                                 <i class="fas fa-trash"></i>
@@ -126,6 +126,54 @@
 
             </div>
             <!-- _____________________________________ -->
+
+            <!-- Инпуты секции Расписание -->
+            <div class="" id="schedule" v-if="section.scheduleToggled">
+
+                <div class="form-group row">
+                    <label for="scheduleSelect"> <i class="fas fa-graduation-cap"></i> Выберите отделение</label>
+                    <select class="form-control" id="scheduleSelect" v-model="formData.theme">
+                        <option>Очное</option>
+                        <option>Заочное</option>
+                    </select>
+                </div>
+
+            </div>
+            <!--_______________________________________-->
+
+            <!-- Инпуты секции Другое -->
+            <div class="" id="any" v-if="section.anyToggled">
+
+                <div class="form-group row">
+                    <label for="anyThemeInput"> <i class="fas fa-bullhorn"></i> Тема</label>
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="anyThemeInput" aria-describedby="anyThemeHelp" placeholder="Тема" v-model="formData.theme" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger" type="button" id="button-anyTheme_trash" @click="formData.theme = '' ">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <small id="anyThemeHelp" class="form-text text-muted">Используйте данное поля для указания тематики вашего предложения. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                </div>
+
+                <div class="form-group row">
+                    <label for="anyTextTextarea"><i class="far fa-clipboard"></i> Сообщение</label>
+
+                    <div class="input-group mb-3">
+                        <textarea class="form-control" id="anyTextTextarea" aria-describedby="anyTextAreaHelp" rows="3" v-model="formData.mainText" required></textarea>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger" type="button" id="button-anyTextArea_trash" @click="formData.mainText = '' ">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <small id="anyTextAreaHelp" class="form-text text-muted">Данное поле обязательно для заполнения. Опишите что именно вы хотите предложить. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                </div>
+
+            </div>
+            <!--_______________________________________-->
 
             <!-- Примечание -->
             <div class="form-group row">
@@ -189,7 +237,6 @@
                     file: [],
                     description: '',
                     url: '',
-                    complete: null,
                     deadline: null
                 }
             }
@@ -205,10 +252,27 @@
                 this.section.newsToggled = false;
                 this.section.scheduleToggled = false;
                 this.section.docsToggled = false;
+                this.clearFormData();
             },
 
+            /**
+             * Очистка формы описания
+             * хз зачем ввёл ибо всё остальное чистим прямо с инпута
+             */
             trashDescription(){
                 this.formData.description = '';
+            },
+
+            /**
+             * Очистка формы для отправки
+             */
+            clearFormData(){
+                this.formData.theme = '';
+                this.formData.mainText = '';
+                this.formData.file = [];
+                this.formData.description = '';
+                this.formData.url = '';
+                this.formData.deadline = null;
             }
         }
     }

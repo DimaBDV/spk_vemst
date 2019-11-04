@@ -3767,6 +3767,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -3801,7 +3849,6 @@ __webpack_require__.r(__webpack_exports__);
         file: [],
         description: '',
         url: '',
-        complete: null,
         deadline: null
       }
     };
@@ -3816,9 +3863,27 @@ __webpack_require__.r(__webpack_exports__);
       this.section.newsToggled = false;
       this.section.scheduleToggled = false;
       this.section.docsToggled = false;
+      this.clearFormData();
     },
+
+    /**
+     * Очистка формы описания
+     * хз зачем ввёл ибо всё остальное чистим прямо с инпута
+     */
     trashDescription: function trashDescription() {
       this.formData.description = '';
+    },
+
+    /**
+     * Очистка формы для отправки
+     */
+    clearFormData: function clearFormData() {
+      this.formData.theme = '';
+      this.formData.mainText = '';
+      this.formData.file = [];
+      this.formData.description = '';
+      this.formData.url = '';
+      this.formData.deadline = null;
     }
   }
 });
@@ -39989,7 +40054,8 @@ var render = function() {
                         type: "text",
                         id: "ThemeInput",
                         "aria-describedby": "ThemeHelp",
-                        placeholder: "Тема новости"
+                        placeholder: "Тема новости",
+                        required: ""
                       },
                       domProps: { value: _vm.formData.theme },
                       on: {
@@ -40039,7 +40105,8 @@ var render = function() {
                       attrs: {
                         id: "MainTextTextarea",
                         "aria-describedby": "TextAreaHelp",
-                        rows: "3"
+                        rows: "3",
+                        required: ""
                       },
                       domProps: { value: _vm.formData.mainText },
                       on: {
@@ -40101,7 +40168,8 @@ var render = function() {
                         type: "text",
                         id: "SectionInput",
                         "aria-describedby": "SectionHelp",
-                        placeholder: "К какому разделу относится документ"
+                        placeholder: "К какому разделу относится документ",
+                        required: ""
                       },
                       domProps: { value: _vm.formData.theme },
                       on: {
@@ -40149,10 +40217,12 @@ var render = function() {
                       ],
                       staticClass: "form-control",
                       attrs: {
-                        type: "text",
+                        type: "url",
+                        pattern: "http://vemst.ru/*",
                         id: "UrlInput",
                         "aria-describedby": "UrlHelp",
-                        placeholder: "http://vemst.ru/..."
+                        placeholder: "http://vemst.ru/...",
+                        required: ""
                       },
                       domProps: { value: _vm.formData.url },
                       on: {
@@ -40187,8 +40257,173 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
+          _vm.section.scheduleToggled
+            ? _c("div", { attrs: { id: "schedule" } }, [
+                _c("div", { staticClass: "form-group row" }, [
+                  _vm._m(10),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.formData.theme,
+                          expression: "formData.theme"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { id: "scheduleSelect" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.formData,
+                            "theme",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c("option", [_vm._v("Очное")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("Заочное")])
+                    ]
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.section.anyToggled
+            ? _c("div", { attrs: { id: "any" } }, [
+                _c("div", { staticClass: "form-group row" }, [
+                  _vm._m(11),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.formData.theme,
+                          expression: "formData.theme"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "anyThemeInput",
+                        "aria-describedby": "anyThemeHelp",
+                        placeholder: "Тема",
+                        required: ""
+                      },
+                      domProps: { value: _vm.formData.theme },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.formData, "theme", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group-append" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-danger",
+                          attrs: {
+                            type: "button",
+                            id: "button-anyTheme_trash"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.formData.theme = ""
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash" })]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(12)
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _vm._m(13),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.formData.mainText,
+                          expression: "formData.mainText"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "anyTextTextarea",
+                        "aria-describedby": "anyTextAreaHelp",
+                        rows: "3",
+                        required: ""
+                      },
+                      domProps: { value: _vm.formData.mainText },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.formData,
+                            "mainText",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group-append" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-danger",
+                          attrs: {
+                            type: "button",
+                            id: "button-anyTextArea_trash"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.formData.mainText = ""
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash" })]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(14)
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
           _c("div", { staticClass: "form-group row" }, [
-            _vm._m(10),
+            _vm._m(15),
             _vm._v(" "),
             _c("div", { staticClass: "input-group mb-3" }, [
               _c("input", {
@@ -40231,7 +40466,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(11)
+            _vm._m(16)
           ])
         ])
       : _vm._e()
@@ -40360,6 +40595,63 @@ var staticRenderFns = [
       [
         _vm._v(
           "Данное поле используется для указания ссылки на страницу где требуется изменить / добавить документ. Для очистки поля нажмите значёк "
+        ),
+        _c("i", { staticClass: "fas fa-trash" })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "scheduleSelect" } }, [
+      _c("i", { staticClass: "fas fa-graduation-cap" }),
+      _vm._v(" Выберите отделение")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "anyThemeInput" } }, [
+      _c("i", { staticClass: "fas fa-bullhorn" }),
+      _vm._v(" Тема")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "small",
+      { staticClass: "form-text text-muted", attrs: { id: "anyThemeHelp" } },
+      [
+        _vm._v(
+          "Используйте данное поля для указания тематики вашего предложения. Для очистки поля нажмите значёк "
+        ),
+        _c("i", { staticClass: "fas fa-trash" })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "anyTextTextarea" } }, [
+      _c("i", { staticClass: "far fa-clipboard" }),
+      _vm._v(" Сообщение")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "small",
+      { staticClass: "form-text text-muted", attrs: { id: "anyTextAreaHelp" } },
+      [
+        _vm._v(
+          "Данное поле обязательно для заполнения. Опишите что именно вы хотите предложить. Для очистки поля нажмите значёк "
         ),
         _c("i", { staticClass: "fas fa-trash" })
       ]

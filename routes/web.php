@@ -39,7 +39,5 @@ Route::post('/upload', 'Support\FileController@store')->name('upload.file');
 // Только для подтверждённых пользователей
 Route::middleware(['verified'])->group(function () {
     Route::get('/offer', "Users\OfferController@index")->name('offer');
-
-    Route::post('/createnewoffer', 'Users\OfferController@store')->name('offer.store');
 });
 

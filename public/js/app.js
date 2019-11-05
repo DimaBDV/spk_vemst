@@ -3815,6 +3815,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -39993,7 +40002,7 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "dropdown-divider" }),
+    _c("hr", { staticClass: "row" }),
     _vm._v(" "),
     _vm.section.toggled
       ? _c(
@@ -40467,7 +40476,11 @@ var render = function() {
             ]),
             _vm._v(" "),
             _vm._m(16)
-          ])
+          ]),
+          _vm._v(" "),
+          _c("hr", { staticClass: "row" }),
+          _vm._v(" "),
+          _vm._m(17)
         ])
       : _vm._e()
   ])
@@ -40680,6 +40693,41 @@ var staticRenderFns = [
         _c("i", { staticClass: "fas fa-trash" })
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("p", { staticClass: "mb-2" }, [
+        _c("i", { staticClass: "fas fa-upload" }),
+        _vm._v(" Загрузка файлов ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "custom-file" }, [
+        _c("input", {
+          staticClass: "custom-file-input",
+          attrs: {
+            type: "file",
+            id: "customFile",
+            multiple: "",
+            "aria-describedby": "UploadHelp"
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          { staticClass: "custom-file-label", attrs: { for: "customFile" } },
+          [_vm._v("Выберите файлы")]
+        ),
+        _vm._v(" "),
+        _c(
+          "small",
+          { staticClass: "form-text text-muted", attrs: { id: "UploadHelp" } },
+          [_vm._v("Для выбора прикрепляемых файлов кликните по полю выше.")]
+        )
+      ])
+    ])
   }
 ]
 render._withStripped = true

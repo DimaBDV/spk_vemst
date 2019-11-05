@@ -33,7 +33,7 @@
 
         </div>
         <!-- ______________________________________________________________________ -->
-        <div class="dropdown-divider"></div>
+        <hr class="row">
 
         <!-- Описание в окне уведомления -->
         <div v-if="section.toggled" class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -190,8 +190,17 @@
                 <small id="DescriptionHelp" class="form-text text-muted">Данное поле используется для указания какиго-либо примечания или коментария. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
             </div>
             <!--_________________________________________-->
-
+            <hr class="row">
             <!-- Загрузка файлов -->
+            <div class="form-group row">
+                <p class="mb-2"><i class="fas fa-upload"></i> Загрузка файлов </p>
+                <div class="custom-file" >
+                    <input type="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp">
+                    <label class="custom-file-label" for="customFile">Выберите файлы</label>
+                    <small id="UploadHelp" class="form-text text-muted">Для выбора прикрепляемых файлов кликните по полю выше.</small>
+                </div>
+
+            </div>
             <!--_________________________________________-->
         </div>
     </div>

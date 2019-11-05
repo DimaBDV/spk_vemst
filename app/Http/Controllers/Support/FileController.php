@@ -42,12 +42,15 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->hasFile('file')){
-            foreach ($request->file as $file) {
-
-                dd($file->isValid(), $request->text);
-            }
-        }
+//        dd($request);
+        $path = $request->file('file')->store('uploads', 'public');
+        return response()->json(['path' => $path], 201);
+//        if($request->hasFile('file')){
+//            foreach ($request->file as $file) {
+//
+//                dd($file->isValid(), $request->text);
+//            }
+//        }
         //
     }
 

@@ -16,19 +16,31 @@
         <div class="row justify-content-center" v-if="!section.toggled">
 
             <div class="col-12 col-sm-3 py-1">
-                <button class="btn btn-outline-primary btn-block" @click="formData.section = section.docs; section.toggled = true; section.docsToggled = true">{{ section.docs }}</button>
+                <button class="btn btn-outline-primary btn-block" @click="formData.section = section.docs; section.toggled = true; section.docsToggled = true">
+                    <!--<i class="far fa-file"></i>-->
+                    {{ section.docs }}
+                </button>
             </div>
 
             <div class="col-12 col-sm-3 py-1">
-                <button class="btn btn-outline-primary btn-block" @click="formData.section = section.news; section.toggled = true; section.newsToggled = true">{{ section.news }}</button>
+                <button class="btn btn-outline-primary btn-block" @click="formData.section = section.news; section.toggled = true; section.newsToggled = true">
+                    <!--<i class="far fa-sticky-note"></i>-->
+                    {{ section.news }}
+                </button>
             </div>
 
             <div class="col-12 col-sm-3 py-1">
-                <button class="btn btn-outline-primary btn-block" @click="formData.section = section.schedule; section.toggled = true; section.scheduleToggled = true">{{ section.schedule }}</button>
+                <button class="btn btn-outline-primary btn-block" @click="formData.section = section.schedule; section.toggled = true; section.scheduleToggled = true">
+                    <!--<i class="far fa-list-alt"></i>-->
+                    {{ section.schedule }}
+                </button>
             </div>
 
             <div class="col-12 col-sm-3 py-1">
-                <button class="btn btn-outline-primary btn-block" @click="formData.section = section.any; section.toggled = true; section.anyToggled = true">{{ section.any }}</button>
+                <button class="btn btn-outline-primary btn-block" @click="formData.section = section.any; section.toggled = true; section.anyToggled = true">
+                    <!--<i class="fas fa-info"></i>-->
+                    {{ section.any }}
+                </button>
             </div>
 
         </div>
@@ -195,22 +207,27 @@
             <div class="form-group row">
                 <p class="mb-2"><i class="fas fa-upload"></i> Загрузка файлов </p>
                 <div class="custom-file" >
-                    <input type="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp">
+                    <input type="file" name="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp" v-on:change="fileInputChange">
                     <label class="custom-file-label" for="customFile">Выберите файлы</label>
-                    <small id="UploadHelp" class="form-text text-muted">Для выбора прикрепляемых файлов кликните по полю выше.</small>
+                    <small id="UploadHelp" class="form-text text-muted pt-3">Для выбора прикрепляемых файлов кликните по полю выше. Загрузка файлов на сервер будет произведена автоматически.</small>
                 </div>
 
             </div>
             <!--_________________________________________-->
+            <div class="form-group row pt-5">
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block"> <i class="fas fa-fire-alt"></i> Отправить</button>
+            </div>
+
         </div>
     </div>
 </template>
 
 <script>
-    import Axios from 'Axios';
+    import axios from 'Axios';
     export default {
         mounted() {
-            console.log('Component mounted.')
+            console.log('Component mounted.');
+            // axios.defaults.withCredentials = true;
         },
         data(){
             return{
@@ -247,6 +264,12 @@
                     description: '',
                     url: '',
                     deadline: null
+                },
+                fileData:{
+                    order: [],
+                    finish: [],
+                    progress: 0,
+                    current: ''
                 }
             }
         },
@@ -282,7 +305,49 @@
                 this.formData.description = '';
                 this.formData.url = '';
                 this.formData.deadline = null;
+            },
+
+            /**
+             * База для загрузки файлов, проверяет инпут и при изменении начинает работать
+             */
+            async fileInputChange(){
+                let files = Array.from(event.target.files);
+                this.fileData.order = files.slice();
+
+                for(let item of files){
+                    await this.uploadFile(item);
+                }
+            },
+
+            /**
+             * Отправка файлов на сервер
+             * @param item
+             * @return {Promise<void>}
+             */
+            async uploadFile(item){
+
+                let form = new FormData();
+                form.append('file', item);
+
+                await axios.post('/webapi/upload', form, {
+                    onUploadProgress: (itemUpload) => {
+                        this.fileData.progress = Math.round( ( itemUpload.loaded /itemUpload.total ) * 100 );
+                        this.fileData.current = item.name + ' ' + this.fileData.progress;
+                    }
+                })
+                .then(response => {
+                    this.fileData.progress = 0;
+                    this.fileData.current = '';
+                    this.fileData.finish.push(item);
+                    this.fileData.order.splice(item, 1);
+
+                    console.info(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                })
             }
+
         }
     }
 </script>

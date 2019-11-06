@@ -204,6 +204,7 @@
             <!--_________________________________________-->
             <hr class="row">
             <!-- Загрузка файлов -->
+            <!-- TODO: Что-то сделать с этим блоком, ибо он очень сильно флексит и все блоки ниже стремятся попасть в этот -->
             <div class="form-group row">
                 <p class="mb-2"><i class="fas fa-upload"></i> Загрузка файлов </p>
                 <div class="custom-file" >
@@ -214,7 +215,19 @@
 
             </div>
             <!--_________________________________________-->
+
+            <!-- Блок с информацией по загружаемым файлам -->
             <div class="form-group row pt-5">
+                <div class="progress w-100" v-if=" fileData.current !== '' ">
+                    <div class="progress-bar" role="progressbar" :style="{ width: fileData.progress + '%' }">{{ fileData.current + '%'}}</div>
+                </div>
+            </div>
+            <!--_________________________________________-->
+
+            <!-- TODO: блок работы с загруженными файлами -->
+
+
+            <div class="form-group row pt-3">
                 <button type="button" class="btn btn-outline-primary btn-lg btn-block"> <i class="fas fa-fire-alt"></i> Отправить</button>
             </div>
 
@@ -344,6 +357,7 @@
                     console.info(response.data);
                 })
                 .catch(error => {
+                    //TODO: Допилить сюда очистку поля загрузки или повторную загрузку файла
                     console.error(error);
                 })
             }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Support;
 
 use App\Http\Controllers\Support\BaseController as Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
@@ -44,7 +45,18 @@ class FileController extends Controller
     {
 //        dd($request);
         $path = $request->file('file')->store('uploads', 'public');
-        return response()->json(['path' => $path], 201);
+        $type = $request->file('file')->getMimeType();
+        $link = env('APP_URL') . Storage::url($path);
+        $error = $request->file('file')->getError();
+        if($error != 0){
+            $error = $request->file('file')->getErrorMessage();
+        }
+        return response()->json([
+            'path' => $path,
+            'type' => $type,
+            'link' => $link,
+            'error' => $error ?? null
+        ], 201);
 //        if($request->hasFile('file')){
 //            foreach ($request->file as $file) {
 //

@@ -3860,6 +3860,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -4018,6 +4031,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   console.info(response.data);
                 })["catch"](function (error) {
+                  //TODO: Допилить сюда очистку поля загрузки или повторную загрузку файла
                   console.error(error);
                 });
 
@@ -41422,6 +41436,22 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
+          _c("div", { staticClass: "form-group row pt-5" }, [
+            _vm.fileData.current !== ""
+              ? _c("div", { staticClass: "progress w-100" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "progress-bar",
+                      style: { width: _vm.fileData.progress + "%" },
+                      attrs: { role: "progressbar" }
+                    },
+                    [_vm._v(_vm._s(_vm.fileData.current + "%"))]
+                  )
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
           _vm._m(18)
         ])
       : _vm._e()
@@ -41649,7 +41679,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row pt-5" }, [
+    return _c("div", { staticClass: "form-group row pt-3" }, [
       _c(
         "button",
         {

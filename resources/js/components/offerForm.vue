@@ -204,8 +204,7 @@
             <!--_________________________________________-->
             <hr class="row">
             <!-- Загрузка файлов -->
-            <!-- TODO: Что-то сделать с этим блоком, ибо он очень сильно флексит и все блоки ниже стремятся попасть в этот -->
-            <div class="form-group row">
+            <div class="form-group row d-block">
                 <p class="mb-2"><i class="fas fa-upload"></i> Загрузка файлов </p>
                 <div class="custom-file" >
                     <input type="file" name="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp" v-on:change="fileInputChange">
@@ -217,9 +216,9 @@
             <!--_________________________________________-->
 
             <!-- Блок с информацией по загружаемым файлам -->
-            <div class="form-group row pt-5">
+            <div class="form-group row d-block">
                 <div class="progress w-100" v-if=" fileData.current !== '' ">
-                    <div class="progress-bar" role="progressbar" :style="{ width: fileData.progress + '%' }">{{ fileData.current + '%'}}</div>
+                    <div class="progress-bar" role="progressbar" :style="{ width: fileData.progress + '%' }">{{ fileData.current }} %</div>
                 </div>
             </div>
             <!--_________________________________________-->
@@ -236,7 +235,7 @@
 </template>
 
 <script>
-    import axios from 'Axios';
+    import axios from 'axios';
     export default {
         mounted() {
             console.log('Component mounted.');

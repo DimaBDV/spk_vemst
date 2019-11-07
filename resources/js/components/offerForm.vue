@@ -207,24 +207,55 @@
             <div class="form-group row d-block">
                 <p class="mb-2"><i class="fas fa-upload"></i> Загрузка файлов </p>
                 <div class="custom-file" >
+                    <!-- FIXME: Очистка поля ввода путём переустановки type="" для возможности загрузить один и тот же файл -->
                     <input type="file" name="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp" v-on:change="fileInputChange">
                     <label class="custom-file-label" for="customFile">Выберите файлы</label>
-                    <small id="UploadHelp" class="form-text text-muted pt-3">Для выбора прикрепляемых файлов кликните по полю выше. Загрузка файлов на сервер будет произведена автоматически.</small>
+                    <small id="UploadHelp" class="form-text text-muted pt-3">Для выбора прикрепляемых файлов кликните по полю выше. Загрузка файлов на сервер будет произведена автоматически. Максимальный размер одного файла 30Мб</small>
                 </div>
 
             </div>
             <!--_________________________________________-->
 
             <!-- Блок с информацией по загружаемым файлам -->
-            <div class="form-group row d-block">
-                <div class="progress w-100" v-if=" fileData.current !== '' ">
+            <div class="form-group row d-block" v-if=" fileData.current !== '' ">
+                <div class="progress w-100" >
                     <div class="progress-bar" role="progressbar" :style="{ width: fileData.progress + '%' }">{{ fileData.current }} %</div>
                 </div>
+                <!-- TODO: после прода ввести функцию отмены и возобновления загрузки -->
+                <!--<button class="btn btn-outline-danger" @click="cancel">Отмена загрузки</button>-->
+                <!--<button class="btn btn-outline-success" @click="retryUpload">Повторить отправку</button>-->
             </div>
             <!--_________________________________________-->
 
             <!-- TODO: блок работы с загруженными файлами -->
+            <div class="form-group row pt-3 d-block">
+                <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Работа с файлами
+                </button>
+                <div class="collapse mt-2" id="collapseExample">
+                    <div class="card card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <p class="h3 text-center">Очередь</p>
+                                <hr/>
+                                <p class="text-muted text-center" v-if="fileData.order.length === 0"> Контейнер пуст </p>
+                                <ul class="list-unstyled" v-for="item in fileData.order">
+                                    <li>{{item.name }}</li>
+                                </ul>
 
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <p class="h3 text-center">Загружены</p>
+                                <hr/>
+                                <p class="text-muted text-center" v-if="formData.file.length === 0"> Контейнер пуст </p>
+                                <ul class="list-unstyled" v-for="item in fileData.finish">
+                                    <li>{{item.name }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group row pt-3">
                 <button type="button" class="btn btn-outline-primary btn-lg btn-block"> <i class="fas fa-fire-alt"></i> Отправить</button>
@@ -236,6 +267,9 @@
 
 <script>
     import axios from 'axios';
+    const CancelToken = axios.CancelToken;
+    let cancel;
+
     export default {
         mounted() {
             console.log('Component mounted.');
@@ -282,7 +316,13 @@
                     finish: [],
                     progress: 0,
                     current: ''
-                }
+                },
+
+                /**
+                 * КОНСТАНТЫ
+                 */
+                MAX_FILE_SIZE: 30000000, // 30 Мб
+
             }
         },
         methods:{
@@ -327,7 +367,14 @@
                 this.fileData.order = files.slice();
 
                 for(let item of files){
-                    await this.uploadFile(item);
+                    if(item.size < this.MAX_FILE_SIZE){
+                        await this.uploadFile(item);
+                    }
+                    else{
+                        this.fileData.order.splice(item, 1);
+
+                        // console.error('Файл - ' + item.name + ' превышает 30 Мб');
+                    }
                 }
             },
 
@@ -342,6 +389,12 @@
                 form.append('file', item);
 
                 await axios.post('/webapi/upload', form, {
+                    /**
+                     * Отмена загрузки
+                     */
+                    cancelToken: new CancelToken(function executor(c) {
+                        cancel = c;
+                    }),
                     onUploadProgress: (itemUpload) => {
                         this.fileData.progress = Math.round( ( itemUpload.loaded /itemUpload.total ) * 100 );
                         this.fileData.current = item.name + ' ' + this.fileData.progress;
@@ -353,14 +406,33 @@
                     this.fileData.finish.push(item);
                     this.fileData.order.splice(item, 1);
 
+                    this.formData.file.push(response.data.path);
+
                     console.info(response.data);
                 })
                 .catch(error => {
                     //TODO: Допилить сюда очистку поля загрузки или повторную загрузку файла
                     console.error(error);
                 })
+            },
+            //  TODO: после прода ввести функцию отмены загрузки
+            // /**
+            //  * Вроде как отмена работы axiox
+            //  */
+            // cancel () {
+            //     cancel();
+            // },
+            //
+            /**
+             * Повторная попытка загрузки файлов из @var this.fileData.order
+             * @return {Promise<void>}
+             */
+            async retryUpload()
+            {
+                for(let item of this.fileData.order){
+                    await this.uploadFile(item);
+                }
             }
-
         }
     }
 </script>

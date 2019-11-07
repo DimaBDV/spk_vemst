@@ -2129,7 +2129,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
+var CancelToken = axios__WEBPACK_IMPORTED_MODULE_1___default.a.CancelToken;
+var cancel;
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.'); // axios.defaults.withCredentials = true;
@@ -2170,7 +2203,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         finish: [],
         progress: 0,
         current: ''
-      }
+      },
+
+      /**
+       * КОНСТАНТЫ
+       */
+      MAX_FILE_SIZE: 30000000 // 30 Мб
+
     };
   },
   methods: {
@@ -2225,20 +2264,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 if (!(_i < _files.length)) {
-                  _context.next = 10;
+                  _context.next = 14;
                   break;
                 }
 
                 item = _files[_i];
-                _context.next = 7;
+
+                if (!(item.size < this.MAX_FILE_SIZE)) {
+                  _context.next = 10;
+                  break;
+                }
+
+                _context.next = 8;
                 return this.uploadFile(item);
 
-              case 7:
+              case 8:
+                _context.next = 11;
+                break;
+
+              case 10:
+                this.fileData.order.splice(item, 1); // console.error('Файл - ' + item.name + ' превышает 30 Мб');
+
+              case 11:
                 _i++;
                 _context.next = 3;
                 break;
 
-              case 10:
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -2273,6 +2325,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 form.append('file', item);
                 _context2.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/webapi/upload', form, {
+                  /**
+                   * Отмена загрузки
+                   */
+                  cancelToken: new CancelToken(function executor(c) {
+                    cancel = c;
+                  }),
                   onUploadProgress: function onUploadProgress(itemUpload) {
                     _this.fileData.progress = Math.round(itemUpload.loaded / itemUpload.total * 100);
                     _this.fileData.current = item.name + ' ' + _this.fileData.progress;
@@ -2284,6 +2342,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.fileData.finish.push(item);
 
                   _this.fileData.order.splice(item, 1);
+
+                  _this.formData.file.push(response.data.path);
 
                   console.info(response.data);
                 })["catch"](function (error) {
@@ -2304,6 +2364,98 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return uploadFile;
+    }(),
+    //  TODO: после прода ввести функцию отмены загрузки
+    // /**
+    //  * Вроде как отмена работы axiox
+    //  */
+    // cancel () {
+    //     cancel();
+    // },
+    //
+
+    /**
+     * Повторная попытка загрузки файлов из @var this.fileData.order
+     * @return {Promise<void>}
+     */
+    retryUpload: function () {
+      var _retryUpload = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, item;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _iteratorNormalCompletion = true;
+                _didIteratorError = false;
+                _iteratorError = undefined;
+                _context3.prev = 3;
+                _iterator = this.fileData.order[Symbol.iterator]();
+
+              case 5:
+                if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+                  _context3.next = 12;
+                  break;
+                }
+
+                item = _step.value;
+                _context3.next = 9;
+                return this.uploadFile(item);
+
+              case 9:
+                _iteratorNormalCompletion = true;
+                _context3.next = 5;
+                break;
+
+              case 12:
+                _context3.next = 18;
+                break;
+
+              case 14:
+                _context3.prev = 14;
+                _context3.t0 = _context3["catch"](3);
+                _didIteratorError = true;
+                _iteratorError = _context3.t0;
+
+              case 18:
+                _context3.prev = 18;
+                _context3.prev = 19;
+
+                if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                  _iterator["return"]();
+                }
+
+              case 21:
+                _context3.prev = 21;
+
+                if (!_didIteratorError) {
+                  _context3.next = 24;
+                  break;
+                }
+
+                throw _iteratorError;
+
+              case 24:
+                return _context3.finish(21);
+
+              case 25:
+                return _context3.finish(18);
+
+              case 26:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[3, 14, 18, 26], [19,, 21, 25]]);
+      }));
+
+      function retryUpload() {
+        return _retryUpload.apply(this, arguments);
+      }
+
+      return retryUpload;
     }()
   }
 });
@@ -39685,16 +39837,16 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "Для выбора прикрепляемых файлов кликните по полю выше. Загрузка файлов на сервер будет произведена автоматически."
+                    "Для выбора прикрепляемых файлов кликните по полю выше. Загрузка файлов на сервер будет произведена автоматически. Максимальный размер одного файла 30Мб"
                   )
                 ]
               )
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group row d-block" }, [
-            _vm.fileData.current !== ""
-              ? _c("div", { staticClass: "progress w-100" }, [
+          _vm.fileData.current !== ""
+            ? _c("div", { staticClass: "form-group row d-block" }, [
+                _c("div", { staticClass: "progress w-100" }, [
                   _c(
                     "div",
                     {
@@ -39705,7 +39857,87 @@ var render = function() {
                     [_vm._v(_vm._s(_vm.fileData.current) + " %")]
                   )
                 ])
-              : _vm._e()
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row pt-3 d-block" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-block",
+                attrs: {
+                  type: "button",
+                  "data-toggle": "collapse",
+                  "data-target": "#collapseExample",
+                  "aria-expanded": "false",
+                  "aria-controls": "collapseExample"
+                }
+              },
+              [_vm._v("\n                Работа с файлами\n            ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "collapse mt-2",
+                attrs: { id: "collapseExample" }
+              },
+              [
+                _c("div", { staticClass: "card card-body" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      { staticClass: "col-12 col-md-6" },
+                      [
+                        _c("p", { staticClass: "h3 text-center" }, [
+                          _vm._v("Очередь")
+                        ]),
+                        _vm._v(" "),
+                        _c("hr"),
+                        _vm._v(" "),
+                        _vm.fileData.order.length === 0
+                          ? _c("p", { staticClass: "text-muted text-center" }, [
+                              _vm._v(" Контейнер пуст ")
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.fileData.order, function(item) {
+                          return _c("ul", { staticClass: "list-unstyled" }, [
+                            _c("li", [_vm._v(_vm._s(item.name))])
+                          ])
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-12 col-md-6" },
+                      [
+                        _c("p", { staticClass: "h3 text-center" }, [
+                          _vm._v("Загружены")
+                        ]),
+                        _vm._v(" "),
+                        _c("hr"),
+                        _vm._v(" "),
+                        _vm.formData.file.length === 0
+                          ? _c("p", { staticClass: "text-muted text-center" }, [
+                              _vm._v(" Контейнер пуст ")
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.fileData.finish, function(item) {
+                          return _c("ul", { staticClass: "list-unstyled" }, [
+                            _c("li", [_vm._v(_vm._s(item.name))])
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                ])
+              ]
+            )
           ]),
           _vm._v(" "),
           _vm._m(18)

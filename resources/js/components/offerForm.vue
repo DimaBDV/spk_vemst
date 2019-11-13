@@ -227,7 +227,7 @@
             </div>
             <!--_________________________________________-->
 
-            <!-- TODO: блок работы с загруженными файлами -->
+            <!-- Блок работы с загруженными файлами -->
             <div class="form-group row pt-3 d-block">
                 <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     Работа с файлами

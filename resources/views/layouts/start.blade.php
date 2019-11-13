@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <meta name="theme-color" content="#101924" />
 </head>
 <body>
 <div id="app">
@@ -28,10 +29,9 @@
 <style>
     body {
         background: url( {{ asset('img/welcomeBG.jpg') }} ) no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
         background-size: cover;
-        -o-background-size: cover;
+        height: 100vh;
+        /*overflow: hidden;*/
     }
 </style>
 </body>

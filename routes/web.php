@@ -11,13 +11,37 @@
 |
 */
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('home');
-    }
-    return view('auth.login');
-});
+/*
+|--------------------------------------------------------------------------
+|   Правила заполнения листа маршрутов
+|--------------------------------------------------------------------------
+|
+| Если вы хотите в дальнейшем кешировать лист маршрутов придерживайтесь
+| одного очень важного правила.
+|
+|       ВСЕ МАРШРУТЫ ДОЛЖНЫ ВЕСТИ НА КОНТРОЛЛЕР
+|         ИСПОЛЬЗОВАНИЕ ЗАМЫКАНИЙ НЕДОПУСТИМО
+|
+*/
+
+Route::get('/', 'WelcomeController@index');
 
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/test', function (){
+    return view('user.test');
+})->middleware(['auth', 'verified']);
+
+Route::post('/upload', 'Support\FileController@store')->name('upload.file');
+
+// Только для подтверждённых пользователей
+Route::middleware(['verified'])->group(function () {
+    Route::get('/offer', "Users\OfferController@index")->name('offer');
+
+
+    Route::post('/webapi/upload', 'Support\FileController@store');
+    Route::post('/webapi/createnewoffer', 'Users\OfferController@store')->middleware('verified');
+});
+

@@ -18,15 +18,16 @@ class Offer extends Migration
 
             $table->string('section');                      // Разде: Новости, Расписание, Документация
             $table->string('theme');                        // Тема, Отделение, Раздел
-            $table->text('mainText')->nullable();                       // Основной текст, у раздела Новости
+            $table->text('mainText')->nullable();           // Основной текст, у раздела Новости
             $table->string('files')->nullable();            // (array) id из таблицы с файлами
-            $table->text('description')->nullable();      // Описание
+            $table->string('old_files')->nullable();        // Файлы которые были обновлены
+            $table->text('description')->nullable();        // Описание
             $table->string('url')->nullable();              // Ссылка, только для Документации
             $table->tinyInteger('complete')->nullable();    // Отметка о выполнении
             $table->timestamp('deadline')->nullable();      // Выполнить до
             $table->timestamp('publishing')->nullable();    // Желаемое время публикации
 
-            $table->integer('user_id'); // Автор
+            $table->unsignedBigInteger('user_id'); // Автор
 
             // Системные строки
             $table->timestamps();
@@ -34,6 +35,7 @@ class Offer extends Migration
 
             $table->foreign('user_id')
                 ->references('id')->on('users')
+                ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
     }

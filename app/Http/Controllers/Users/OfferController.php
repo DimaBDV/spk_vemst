@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Users;
 
+use App\Http\Requests\offerRequest;
+use App\Traits\offerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Users\BaseController as Controller;
 use Illuminate\Support\Facades\Session;
 
 class OfferController extends Controller
 {
+//    FIXME: код с трейта раскидать по нормальным модулям, а не вот это вот всё
+    use offerTrait;
 
     /**
      * OfferController constructor.
@@ -43,9 +47,11 @@ class OfferController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(offerRequest $request)
     {
-        dd($request);
+        $this->checkSection($request);
+        $status = $this->checkComplete();
+        return response()->json($status['message'], $status['code']);
     }
 
     /**

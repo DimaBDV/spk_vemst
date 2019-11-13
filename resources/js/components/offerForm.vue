@@ -208,7 +208,7 @@
                 <p class="mb-2"><i class="fas fa-upload"></i> Загрузка файлов </p>
                 <div class="custom-file" >
                     <!-- FIXME: Очистка поля ввода путём переустановки type="" для возможности загрузить один и тот же файл -->
-                    <input type="file" name="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp" v-on:change="fileInputChange">
+                    <input :type="input_file_type" name="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp" v-on:change="fileInputChange">
                     <label class="custom-file-label" for="customFile">Выберите файлы</label>
                     <small id="UploadHelp" class="form-text text-muted pt-3">Для выбора прикрепляемых файлов кликните по полю выше. Загрузка файлов на сервер будет произведена автоматически. Максимальный размер одного файла 30Мб</small>
                 </div>
@@ -247,18 +247,38 @@
                             <div class="col-12 col-md-6">
                                 <p class="h3 text-center">Загружены</p>
                                 <hr/>
-                                <p class="text-muted text-center" v-if="formData.file.length === 0"> Контейнер пуст </p>
-                                <ul class="list-unstyled" v-for="item in fileData.finish">
-                                    <li>{{item.name }}</li>
+                                <p class="text-muted text-center" v-if="fileData.finish.length === 0"> Контейнер пуст </p>
+                                <ul class="list-unstyled" v-for="(item, index) in fileData.finish">
+                                    <li>{{item.name }}
+                                        <button class="btn btn-outline-danger btn-sm" @click="removeAttachFile(index)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
+
+                        <hr class="row" v-if="fileData.failed.length !== 0"/>
+                        <div class="row" v-if="fileData.failed.length !== 0">
+                            <div class="col">
+                                <p class="h3 text-center">Ошибка загрузки</p>
+                                <hr/>
+                                <div v-for="item in fileData.failed">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">{{item.name}}</div>
+                                        <div class="col-12 col-md-6">{{item.error}}</div>
+                                    </div>
+                                    <hr/>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
             <div class="form-group row pt-3">
-                <button type="button" class="btn btn-outline-primary btn-lg btn-block"> <i class="fas fa-fire-alt"></i> Отправить</button>
+                <button :disabled="button_disabled" type="button" class="btn btn-outline-primary btn-lg btn-block" @click="sendForm"> <i class="fas fa-fire-alt"></i> Отправить</button>
             </div>
 
         </div>
@@ -315,7 +335,8 @@
                     order: [],
                     finish: [],
                     progress: 0,
-                    current: ''
+                    current: '',
+                    failed: []
                 },
 
                 /**
@@ -323,9 +344,20 @@
                  */
                 MAX_FILE_SIZE: 30000000, // 30 Мб
 
+                button_disabled: false,
+                input_file_type: 'file'
+
             }
         },
         methods:{
+            /**
+             * Удаление прикреплённого файла
+             */
+            removeAttachFile(item){
+                this.fileData.finish.splice(item,1);
+                this.formData.file.splice(item,1);
+            },
+
             /**
              * Очистка всех указателей и перевод в default
              */
@@ -336,6 +368,7 @@
                 this.section.newsToggled = false;
                 this.section.scheduleToggled = false;
                 this.section.docsToggled = false;
+                this.section.anyToggled = false;
                 this.clearFormData();
             },
 
@@ -358,11 +391,27 @@
                 this.formData.url = '';
                 this.formData.deadline = null;
             },
+            /**
+             * Очитска пормы с файлами
+             */
+            clearFileData(){
+                this.input_file_type = 'text';
+                this.input_file_type = 'file';
+
+                this.fileData.order = [];
+                this.fileData.finish = [];
+                this.fileData.progress = 0;
+                this.fileData.current = '';
+                this.fileData.failed = [];
+            },
 
             /**
              * База для загрузки файлов, проверяет инпут и при изменении начинает работать
              */
             async fileInputChange(){
+
+                this.button_disabled = true; //Блокируем кнопку отправки пока идёт завгрузка
+
                 let files = Array.from(event.target.files);
                 this.fileData.order = files.slice();
 
@@ -372,10 +421,17 @@
                     }
                     else{
                         this.fileData.order.splice(item, 1);
+                        this.fileData.failed.push({
+                            file: item,
+                            name: item.name,
+                            error: 'Данный файл превышает лимит в 30Мб'
+                        });
 
                         // console.error('Файл - ' + item.name + ' превышает 30 Мб');
                     }
                 }
+
+                this.button_disabled = false; // как только асинхронка закончит выполнение возвращаем кнопку
             },
 
             /**
@@ -406,13 +462,21 @@
                     this.fileData.finish.push(item);
                     this.fileData.order.splice(item, 1);
 
-                    this.formData.file.push(response.data.path);
+                    this.formData.file.push(response.data.id);
 
-                    console.info(response.data);
+                    //console.info(response.data);
                 })
                 .catch(error => {
-                    //TODO: Допилить сюда очистку поля загрузки или повторную загрузку файла
-                    console.error(error);
+
+                    this.fileData.progress = 0;
+                    this.fileData.current = '';
+                    this.fileData.failed.push({
+                        file: item,
+                        name: item.name,
+                        error: error.response.data.errors
+                    });
+                    this.fileData.order.splice(item, 1);
+
                 })
             },
             //  TODO: после прода ввести функцию отмены загрузки
@@ -432,6 +496,43 @@
                 for(let item of this.fileData.order){
                     await this.uploadFile(item);
                 }
+            },
+
+            /**
+             * Отправка формы offer
+             */
+            async sendForm(){
+                this.button_disabled = true; //Блокируем кнопку отправки пока идёт завгрузка
+
+                let form = new FormData();
+                form.append('section', this.formData.section);
+                form.append('theme', this.formData.theme);
+                form.append('mainText', this.formData.mainText);
+                form.append('files', this.formData.file ); //Требуется парсинг на стороне сервера
+                form.append('description', this.formData.description);
+                form.append('url', this.formData.url);
+                form.append('deadline', this.formData.deadline);
+
+                await axios.post('/webapi/createnewoffer', form)
+                    .then(response => {
+                        this.clearOffer(); // полная очистка
+                    //    TODO: $emit события в "ожидают публикации"
+                    })
+                    .catch(error => {
+                    //    TODO: обработка ошибок валидации и http error
+                    });
+
+                this.button_disabled = false; // как только асинхронка закончит выполнение возвращаем кнопку
+            },
+
+            /**
+             * Полная очистка данных
+             */
+            clearOffer(){
+                this.clearFormData();
+                this.clearFileData();
+                this.clearSection();
+
             }
         }
     }

@@ -42,5 +42,6 @@ Route::middleware(['verified'])->group(function () {
 
 
     Route::post('/webapi/upload', 'Support\FileController@store');
+    Route::post('/webapi/createnewoffer', 'Users\OfferController@store')->middleware('verified');
 });
 

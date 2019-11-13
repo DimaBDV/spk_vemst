@@ -2160,6 +2160,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var CancelToken = axios__WEBPACK_IMPORTED_MODULE_1___default.a.CancelToken;
 var cancel;
@@ -2202,17 +2222,28 @@ var cancel;
         order: [],
         finish: [],
         progress: 0,
-        current: ''
+        current: '',
+        failed: []
       },
 
       /**
        * КОНСТАНТЫ
        */
-      MAX_FILE_SIZE: 30000000 // 30 Мб
-
+      MAX_FILE_SIZE: 30000000,
+      // 30 Мб
+      button_disabled: false,
+      input_file_type: 'file'
     };
   },
   methods: {
+    /**
+     * Удаление прикреплённого файла
+     */
+    removeAttachFile: function removeAttachFile(item) {
+      this.fileData.finish.splice(item, 1);
+      this.formData.file.splice(item, 1);
+    },
+
     /**
      * Очистка всех указателей и перевод в default
      */
@@ -2222,6 +2253,7 @@ var cancel;
       this.section.newsToggled = false;
       this.section.scheduleToggled = false;
       this.section.docsToggled = false;
+      this.section.anyToggled = false;
       this.clearFormData();
     },
 
@@ -2246,6 +2278,19 @@ var cancel;
     },
 
     /**
+     * Очитска пормы с файлами
+     */
+    clearFileData: function clearFileData() {
+      this.input_file_type = 'text';
+      this.input_file_type = 'file';
+      this.fileData.order = [];
+      this.fileData.finish = [];
+      this.fileData.progress = 0;
+      this.fileData.current = '';
+      this.fileData.failed = [];
+    },
+
+    /**
      * База для загрузки файлов, проверяет инпут и при изменении начинает работать
      */
     fileInputChange: function () {
@@ -2258,39 +2303,49 @@ var cancel;
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                this.button_disabled = true; //Блокируем кнопку отправки пока идёт завгрузка
+
                 files = Array.from(event.target.files);
                 this.fileData.order = files.slice();
                 _i = 0, _files = files;
 
-              case 3:
+              case 4:
                 if (!(_i < _files.length)) {
-                  _context.next = 14;
+                  _context.next = 16;
                   break;
                 }
 
                 item = _files[_i];
 
                 if (!(item.size < this.MAX_FILE_SIZE)) {
-                  _context.next = 10;
+                  _context.next = 11;
                   break;
                 }
 
-                _context.next = 8;
+                _context.next = 9;
                 return this.uploadFile(item);
 
-              case 8:
-                _context.next = 11;
+              case 9:
+                _context.next = 13;
                 break;
-
-              case 10:
-                this.fileData.order.splice(item, 1); // console.error('Файл - ' + item.name + ' превышает 30 Мб');
 
               case 11:
+                this.fileData.order.splice(item, 1);
+                this.fileData.failed.push({
+                  file: item,
+                  name: item.name,
+                  error: 'Данный файл превышает лимит в 30Мб'
+                }); // console.error('Файл - ' + item.name + ' превышает 30 Мб');
+
+              case 13:
                 _i++;
-                _context.next = 3;
+                _context.next = 4;
                 break;
 
-              case 14:
+              case 16:
+                this.button_disabled = false; // как только асинхронка закончит выполнение возвращаем кнопку
+
+              case 17:
               case "end":
                 return _context.stop();
             }
@@ -2343,12 +2398,19 @@ var cancel;
 
                   _this.fileData.order.splice(item, 1);
 
-                  _this.formData.file.push(response.data.path);
+                  _this.formData.file.push(response.data.id); //console.info(response.data);
 
-                  console.info(response.data);
                 })["catch"](function (error) {
-                  //TODO: Допилить сюда очистку поля загрузки или повторную загрузку файла
-                  console.error(error);
+                  _this.fileData.progress = 0;
+                  _this.fileData.current = '';
+
+                  _this.fileData.failed.push({
+                    file: item,
+                    name: item.name,
+                    error: error.response.data.errors
+                  });
+
+                  _this.fileData.order.splice(item, 1);
                 });
 
               case 4:
@@ -2456,7 +2518,67 @@ var cancel;
       }
 
       return retryUpload;
-    }()
+    }(),
+
+    /**
+     * Отправка формы offer
+     */
+    sendForm: function () {
+      var _sendForm = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var _this2 = this;
+
+        var form;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.button_disabled = true; //Блокируем кнопку отправки пока идёт завгрузка
+
+                form = new FormData();
+                form.append('section', this.formData.section);
+                form.append('theme', this.formData.theme);
+                form.append('mainText', this.formData.mainText);
+                form.append('files', this.formData.file); //Требуется парсинг на стороне сервера
+
+                form.append('description', this.formData.description);
+                form.append('url', this.formData.url);
+                form.append('deadline', this.formData.deadline);
+                _context4.next = 11;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/webapi/createnewoffer', form).then(function (response) {
+                  _this2.clearOffer(); // полная очистка
+                  //    TODO: $emit события в "ожидают публикации"
+
+                })["catch"](function (error) {//    TODO: обработка ошибок валидации и http error
+                });
+
+              case 11:
+                this.button_disabled = false; // как только асинхронка закончит выполнение возвращаем кнопку
+
+              case 12:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function sendForm() {
+        return _sendForm.apply(this, arguments);
+      }
+
+      return sendForm;
+    }(),
+
+    /**
+     * Полная очистка данных
+     */
+    clearOffer: function clearOffer() {
+      this.clearFormData();
+      this.clearFileData();
+      this.clearSection();
+    }
   }
 });
 
@@ -39811,7 +39933,7 @@ var render = function() {
               _c("input", {
                 staticClass: "custom-file-input",
                 attrs: {
-                  type: "file",
+                  type: _vm.input_file_type,
                   name: "file",
                   id: "customFile",
                   multiple: "",
@@ -39920,27 +40042,98 @@ var render = function() {
                         _vm._v(" "),
                         _c("hr"),
                         _vm._v(" "),
-                        _vm.formData.file.length === 0
+                        _vm.fileData.finish.length === 0
                           ? _c("p", { staticClass: "text-muted text-center" }, [
                               _vm._v(" Контейнер пуст ")
                             ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm._l(_vm.fileData.finish, function(item) {
+                        _vm._l(_vm.fileData.finish, function(item, index) {
                           return _c("ul", { staticClass: "list-unstyled" }, [
-                            _c("li", [_vm._v(_vm._s(item.name))])
+                            _c("li", [
+                              _vm._v(
+                                _vm._s(item.name) +
+                                  "\n                                    "
+                              ),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-outline-danger btn-sm",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.removeAttachFile(index)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fas fa-trash" })]
+                              )
+                            ])
                           ])
                         })
                       ],
                       2
                     )
-                  ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.fileData.failed.length !== 0
+                    ? _c("hr", { staticClass: "row" })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.fileData.failed.length !== 0
+                    ? _c("div", { staticClass: "row" }, [
+                        _c(
+                          "div",
+                          { staticClass: "col" },
+                          [
+                            _c("p", { staticClass: "h3 text-center" }, [
+                              _vm._v("Ошибка загрузки")
+                            ]),
+                            _vm._v(" "),
+                            _c("hr"),
+                            _vm._v(" "),
+                            _vm._l(_vm.fileData.failed, function(item) {
+                              return _c("div", [
+                                _c("div", { staticClass: "row" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "col-12 col-md-6" },
+                                    [_vm._v(_vm._s(item.name))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "col-12 col-md-6" },
+                                    [_vm._v(_vm._s(item.error))]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("hr")
+                              ])
+                            })
+                          ],
+                          2
+                        )
+                      ])
+                    : _vm._e()
                 ])
               ]
             )
           ]),
           _vm._v(" "),
-          _vm._m(18)
+          _c("div", { staticClass: "form-group row pt-3" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-primary btn-lg btn-block",
+                attrs: { disabled: _vm.button_disabled, type: "button" },
+                on: { click: _vm.sendForm }
+              },
+              [
+                _c("i", { staticClass: "fas fa-fire-alt" }),
+                _vm._v(" Отправить")
+              ]
+            )
+          ])
         ])
       : _vm._e()
   ])
@@ -40161,21 +40354,6 @@ var staticRenderFns = [
     return _c("p", { staticClass: "mb-2" }, [
       _c("i", { staticClass: "fas fa-upload" }),
       _vm._v(" Загрузка файлов ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row pt-3" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-outline-primary btn-lg btn-block",
-          attrs: { type: "button" }
-        },
-        [_c("i", { staticClass: "fas fa-fire-alt" }), _vm._v(" Отправить")]
-      )
     ])
   }
 ]

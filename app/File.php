@@ -5,29 +5,21 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Offer extends Model
+class File extends Model
 {
     use SoftDeletes;
 
-
-    protected $table = 'offer';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'section',
-        'theme',
-        'mainText',
-        'files',
-        'description',
-        'url',
-        'complete',
-        'deadline',
-        'publishing',
-        'user_id'
-];
+        'user_id',
+        'name',
+        'mime_type',
+        'path'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -44,8 +36,6 @@ class Offer extends Model
      * @var array
      */
     protected $casts = [
-        'deadline' => 'datetime',
-        'publishing' => 'datetime',
-        'complete' => 'bool'
+
     ];
 }

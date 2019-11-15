@@ -12,6 +12,6 @@
 
         {{-- Тело --}}
 
-        You are logged in!
+        @include('offer.modules.waitingList.list')
     </div>
 </div>

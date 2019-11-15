@@ -22,6 +22,9 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 Vue.component('offer-form', require('./components/offerForm.vue').default);
+Vue.component('waiting-list', require('./components/waiting.vue').default);
+Vue.component('waiting-modal', require('./components/waitingModal.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

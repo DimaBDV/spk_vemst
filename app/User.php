@@ -16,7 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'fathers_name', 'unit', 'email', 'password',
+        'name', 'fathers_name', 'unit', 'email', 'password', 'group'
     ];
 
     /**
@@ -43,5 +43,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new Notifications\CustomVerifyEmailNotification);
+    }
+
+    public function isAdmin(){
+        return $this->group == 'A';
+    }
+
+    public function isActive(){
+        return $this->group != 'B';
     }
 }

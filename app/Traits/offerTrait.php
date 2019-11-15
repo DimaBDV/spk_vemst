@@ -10,6 +10,7 @@ namespace App\Traits;
 
 
 use App\Offer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 trait offerTrait
@@ -42,7 +43,7 @@ trait offerTrait
         $offer->section = $request->get('section');
         $offer->theme = $request->get('theme');
         $offer->mainText = $request->get('mainText');
-        $offer->files = json_decode( $request->get('files') );
+        $offer->files = $request->get('files');
         $offer->description = $request->get('description');
         $offer->url = $request->get('url');
         $offer->complete = false;
@@ -106,7 +107,8 @@ trait offerTrait
                     'section' => $offer->section,
                     'theme' => $offer->theme
                 ],
-                'code' => 201
+                'code' => 201,
+                'offer' => $offer
             ];
         }
         else{

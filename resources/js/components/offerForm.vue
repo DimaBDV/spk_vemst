@@ -292,7 +292,7 @@
 
     export default {
         mounted() {
-            console.log('Component mounted.');
+            // console.log('Component mounted.');
             // axios.defaults.withCredentials = true;
         },
         data(){
@@ -350,6 +350,15 @@
             }
         },
         methods:{
+            /**
+             * Создаём событие и отправляем данные на $root компонент
+             * Используется для предачи данных о созданных "предложениях" между компонентами
+             *
+             * Подробнее читай в Docs\front\offerEmit
+             */
+            sendOfferDataOnRootEmit(responceData){
+                this.$root.$emit('newOffer', responceData)
+            },
             /**
              * Удаление прикреплённого файла
              */
@@ -508,7 +517,7 @@
                 form.append('section', this.formData.section);
                 form.append('theme', this.formData.theme);
                 form.append('mainText', this.formData.mainText);
-                form.append('files', this.formData.file ); //Требуется парсинг на стороне сервера
+                form.append('files', JSON.stringify( this.formData.file ) ); //Требуется парсинг на стороне сервера
                 form.append('description', this.formData.description);
                 form.append('url', this.formData.url);
                 form.append('deadline', this.formData.deadline);
@@ -516,7 +525,7 @@
                 await axios.post('/webapi/createnewoffer', form)
                     .then(response => {
                         this.clearOffer(); // полная очистка
-                    //    TODO: $emit события в "ожидают публикации"
+                        this.sendOfferDataOnRootEmit(response.data);
                     })
                     .catch(error => {
                     //    TODO: обработка ошибок валидации и http error

@@ -107,7 +107,18 @@ class FileController extends Controller
      */
     public function show($id)
     {
-        //
+       $result = File::findOrFail($id);
+       $url = Storage::url($result->path);
+       $downloadLink = response()->download('storage/' . $result->path, $result->name);
+       $type = $result->mime_type;
+       $name = $result->name;
+
+        return response()->json([
+            'url' => $url,
+            'type' => $type,
+            'name' => $name
+        ]);
+
     }
 
     /**

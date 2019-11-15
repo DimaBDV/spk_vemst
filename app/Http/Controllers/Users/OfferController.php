@@ -6,7 +6,10 @@ use App\Http\Requests\offerRequest;
 use App\Traits\offerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Users\BaseController as Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+
+use App\Repository\OfferRepository;
 
 class OfferController extends Controller
 {
@@ -18,8 +21,15 @@ class OfferController extends Controller
      */
     public function __construct()
     {
+        $this->repository = app(OfferRepository::class);
         parent::__construct();
     }
+
+    /**
+     * Репозиторий Offer
+     * @var \Illuminate\Contracts\Foundation\Application|mixed
+     */
+    private $repository;
 
     /**
      * Display a listing of the resource.
@@ -28,7 +38,8 @@ class OfferController extends Controller
      */
     public function index()
     {
-        return view('offer.main');
+        $offers = $this->repository->getAll(Auth::id());
+        return response()->json($offers);
     }
 
     /**
@@ -38,7 +49,7 @@ class OfferController extends Controller
      */
     public function create()
     {
-        //
+        return view('offer.main');
     }
 
     /**
@@ -51,7 +62,7 @@ class OfferController extends Controller
     {
         $this->checkSection($request);
         $status = $this->checkComplete();
-        return response()->json($status['message'], $status['code']);
+        return response()->json($status['offer'], $status['code']);
     }
 
     /**

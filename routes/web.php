@@ -38,10 +38,26 @@ Route::post('/upload', 'Support\FileController@store')->name('upload.file');
 
 // Только для подтверждённых пользователей
 Route::middleware(['verified'])->group(function () {
-    Route::get('/offer', "Users\OfferController@index")->name('offer');
+
+    Route::prefix('offer')->group(function () {
+        Route::get('/', "Users\OfferController@create")->name('offer');
+    });
+
+    Route::prefix('webapi')->group(function () {
+
+        Route::post('upload', 'Support\FileController@store');
+        Route::post('createnewoffer', 'Users\OfferController@store')->middleware('verified');
 
 
-    Route::post('/webapi/upload', 'Support\FileController@store');
-    Route::post('/webapi/createnewoffer', 'Users\OfferController@store')->middleware('verified');
+        Route::get('file/show/{id}','Support\FileController@show')->where('id', '[0-9]+');
+        Route::prefix('offer')->group(function () {
+
+            Route::get('/list', "Users\OfferController@index");
+
+        });
+
+    });
+
+
 });
 

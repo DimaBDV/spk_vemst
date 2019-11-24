@@ -43,6 +43,10 @@ Route::middleware(['verified'])->group(function () {
         Route::get('/', "Users\OfferController@create")->name('offer');
     });
 
+    Route::prefix('admin')->group(function () {
+        Route::get('/', "Admin\OfferController@index");
+    });
+
     Route::prefix('webapi')->group(function () {
 
         Route::post('upload', 'Support\FileController@store');

@@ -2770,6 +2770,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -2793,7 +2801,8 @@ __webpack_require__.r(__webpack_exports__);
       file: [],
       description: '',
       url: '',
-      deadline: null
+      deadline: null,
+      loadingError: false
     };
   },
   methods: {
@@ -2805,6 +2814,7 @@ __webpack_require__.r(__webpack_exports__);
       this.description = '';
       this.url = '';
       this.deadline = null;
+      this.loadingError = false;
     },
 
     /**
@@ -2859,7 +2869,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/webapi/file/show/' + item).then(function (response) {
         _this2.checkFile(response.data);
-      })["catch"](function (error) {//    TODO: вывод ошибки
+      })["catch"](function (error) {
+        _this2.loadingError = true;
       });
     },
 
@@ -40900,13 +40911,11 @@ var render = function() {
               _vm._v(" "),
               _vm.url !== "" ? _c("p", [_vm._v(_vm._s(_vm.url))]) : _vm._e(),
               _vm._v(" "),
-              _vm.file.length !== 0
-                ? _c("p", [_vm._v("Прикрепленные файлы")])
-                : _vm._e(),
+              _c("p", [_vm._v("Прикрепленные файлы:")]),
               _vm._v(" "),
               _vm._l(_vm.file, function(item) {
                 return _vm.file.length !== 0
-                  ? _c("div", { staticClass: "card card-body" }, [
+                  ? _c("div", { staticClass: "card card-body my-1" }, [
                       item.image
                         ? _c("div", { staticClass: "row" }, [
                             _c("div", { staticClass: "col" }, [
@@ -40927,7 +40936,23 @@ var render = function() {
                           ])
                     ])
                   : _vm._e()
-              })
+              }),
+              _vm._v(" "),
+              _vm.file.length == 0
+                ? _c("div", [
+                    _c("p", [
+                      _vm._v("Вы не прикрепляли файлы к данному предложению")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.loadingError
+                ? _c("p", { staticClass: "h4 text-center text-muted" }, [
+                    _vm._v(
+                      "\n                    Во время загрузки файла произошла ошибка\n                "
+                    )
+                  ])
+                : _vm._e()
             ],
             2
           ),
@@ -40968,15 +40993,6 @@ var staticRenderFns = [
           attrs: { type: "button", "data-dismiss": "modal" }
         },
         [_vm._v("Закрыть")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: { type: "button", disabled: "" }
-        },
-        [_vm._v("Сохранить")]
       )
     ])
   }

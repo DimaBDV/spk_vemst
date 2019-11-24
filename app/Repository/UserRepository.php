@@ -37,4 +37,17 @@ class UserRepository extends CoreRepository
         return $result;
     }
 
+    /**
+     * Найти всех Администраторов
+     * @return mixed
+     */
+    public function getAllAdmins(){
+        $result = $this->startConditions()
+            ->where('group', 'A')
+//            ->toBase()
+            ->get();
+
+        return $result;
+    }
+
 }

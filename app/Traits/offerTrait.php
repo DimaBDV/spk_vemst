@@ -9,7 +9,11 @@
 namespace App\Traits;
 
 
+use App\Jobs\SendEmailNewOffer;
+use App\Notifications\NewOfferNotification;
+use App\Notifications\NewOfferToAdminNotification;
 use App\Offer;
+use App\Repository\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -39,6 +43,7 @@ trait offerTrait
      */
     private function saveOffer( $request){
         $offer = new Offer();
+        $this->user = $request->user();
 
         $offer->section = $request->get('section');
         $offer->theme = $request->get('theme');
@@ -67,6 +72,12 @@ trait offerTrait
     private $status;
     private $offer;
     private $error;
+
+    /**
+     * Сендер
+     * @var \App\User
+     */
+    private $user;
 
     /**
      * Установка статуса
@@ -101,6 +112,7 @@ trait offerTrait
     public function checkComplete(){
         if($this->status){
             $offer = $this->offer;
+            $this->fireNotify();
             return [
                 'message' => [
                     'id' => $offer->id,
@@ -119,6 +131,19 @@ trait offerTrait
         }
     }
 
+    /**
+     * Создаёт новое уведомление
+     */
+    public function fireNotify(){
+//        FIXME: swiftMailer даёт сбой, а так же надо какой-то обработчик ошибок сюда заебенить
+        $admins = app(UserRepository::class);
+        $admins = $admins->getAllAdmins();
+        $admins->each(function ($item, $key){
+            return $this->dispatch(new SendEmailNewOffer($item, $this->offer));
+        });
+
+        $this->dispatch(new SendEmailNewOffer($this->user, $this->offer));
+    }
 
 
 }

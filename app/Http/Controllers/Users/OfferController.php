@@ -62,6 +62,7 @@ class OfferController extends Controller
     {
         $this->checkSection($request);
         $status = $this->checkComplete();
+
         return response()->json($status['offer'], $status['code']);
     }
 

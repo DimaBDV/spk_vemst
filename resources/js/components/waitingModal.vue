@@ -15,8 +15,8 @@
                     <p v-if="description !=='' ">{{ description }}</p>
                     <p v-if="url !=='' ">{{ url }}</p>
 
-                    <p v-if="file.length !== 0">Прикрепленные файлы</p>
-                    <div v-if="file.length !== 0" v-for="item in file" class="card card-body">
+                    <p>Прикрепленные файлы:</p>
+                    <div v-if="file.length !== 0" v-for="item in file" class="card card-body my-1">
                         <div class="row" v-if="item.image">
                             <div class="col">
                                 <img :src="item.url" alt="..." class="img-thumbnail w-50">
@@ -30,11 +30,19 @@
                             <p>{{item.name}}</p>
                         </div>
                     </div>
+                    <div v-if="file.length == 0">
+                        <p>Вы не прикрепляли файлы к данному предложению</p>
+                    </div>
+
+                    <p class="h4 text-center text-muted" v-if="loadingError">
+                        Во время загрузки файла произошла ошибка
+                    </p>
+
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary" disabled>Сохранить</button>
+                    <!--<button type="button" class="btn btn-primary" disabled>Сохранить</button>-->
                 </div>
             </div>
         </div>
@@ -65,7 +73,9 @@
                 file: [],
                 description: '',
                 url: '',
-                deadline: null
+                deadline: null,
+
+                loadingError: false
             }
         },
         methods:{
@@ -77,6 +87,8 @@
                 this.description= '';
                 this.url= '';
                 this.deadline= null;
+
+                this.loadingError = false;
             },
             /**
              * Открыть модальное окно
@@ -110,7 +122,7 @@
                         this.checkFile(response.data);
                     })
                     .catch(error => {
-                    //    TODO: вывод ошибки
+                        this.loadingError = true;
                     });
             },
             /**

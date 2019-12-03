@@ -60,6 +60,14 @@
                 this.addNewOfferToOffersList(data);
             });
 
+            /**
+             * Приём события DeleteItemOnWaitingList
+             */
+            this.$root.$on('DeleteItemOnWaitingList', data => {
+                this.deleteOfferOnList(data);
+            });
+
+
             this.getOffer();
         },
         data(){
@@ -103,6 +111,15 @@
                 this.loadError = false;
                 this.errorMessage = null;
                 this.getOffer();
+            },
+
+            deleteOfferOnList(id){
+                this.offers.forEach( (item, key) => {
+                    if(item.id === id)
+                    {
+                        this.offers.splice(key, 1);
+                    }
+                } )
             }
         }
 

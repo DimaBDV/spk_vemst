@@ -2668,6 +2668,13 @@ __webpack_require__.r(__webpack_exports__);
     this.$root.$on('newOffer', function (data) {
       _this.addNewOfferToOffersList(data);
     });
+    /**
+     * Приём события DeleteItemOnWaitingList
+     */
+
+    this.$root.$on('DeleteItemOnWaitingList', function (data) {
+      _this.deleteOfferOnList(data);
+    });
     this.getOffer();
   },
   data: function data() {
@@ -2710,6 +2717,15 @@ __webpack_require__.r(__webpack_exports__);
       this.loadError = false;
       this.errorMessage = null;
       this.getOffer();
+    },
+    deleteOfferOnList: function deleteOfferOnList(id) {
+      var _this3 = this;
+
+      this.offers.forEach(function (item, key) {
+        if (item.id === id) {
+          _this3.offers.splice(key, 1);
+        }
+      });
     }
   }
 });
@@ -2802,6 +2818,7 @@ __webpack_require__.r(__webpack_exports__);
       description: '',
       url: '',
       deadline: null,
+      id: null,
       loadingError: false
     };
   },
@@ -2814,6 +2831,7 @@ __webpack_require__.r(__webpack_exports__);
       this.description = '';
       this.url = '';
       this.deadline = null;
+      this.id = null;
       this.loadingError = false;
     },
 
@@ -2822,6 +2840,7 @@ __webpack_require__.r(__webpack_exports__);
      * @param data
      */
     openModal: function openModal(data) {
+      this.id = data.id;
       this.section = data.section;
       this.theme = data.theme;
       this.mainText = data.mainText;
@@ -2895,6 +2914,17 @@ __webpack_require__.r(__webpack_exports__);
           url: file.url
         });
       }
+    },
+    deleteOffer: function deleteOffer() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]('/webapi/offer/delete/' + this.id).then(function (response) {
+        _this3.$root.$emit('DeleteItemOnWaitingList', _this3.id);
+
+        $('#modal').modal('hide');
+        console.log('Ok');
+      })["catch"](function (error) {//TODO: вывод ошибок
+      });
     }
   }
 });
@@ -40957,7 +40987,26 @@ var render = function() {
             2
           ),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { type: "button" },
+                on: { click: _vm.deleteOffer }
+              },
+              [_vm._v("Удалить")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" }
+              },
+              [_vm._v("Закрыть")]
+            )
+          ])
         ])
       ])
     ]
@@ -40980,21 +41029,6 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Закрыть")]
-      )
-    ])
   }
 ]
 render._withStripped = true

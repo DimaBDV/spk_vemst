@@ -8,6 +8,8 @@
 
 namespace App\Traits;
 
+use App\Jobs\NewOfferJob;
+use App\Notifications\NewOfferNotification;
 use App\Offer;
 use App\Repository\UserRepository;
 use Carbon\Carbon;
@@ -134,10 +136,10 @@ trait offerTrait
 //        FIXME: swiftMailer даёт сбой, а так же надо какой-то обработчик ошибок сюда заебенить
         $admins = app(UserRepository::class);
         $admins = $admins->getAllAdmins();
-//        $admins->each(function ($item, $key){
-//            return $this->dispatch(new SendEmailNewOffer($item, $this->offer));
-//        });
-//
+//        $this->dispatch(new NewOfferJob($this->user, $this->offer));
+        $admins->each(function ($item, $key){
+            return $item->notify(new NewOfferNotification($this->offer));
+        });
 //        $this->dispatch(new SendEmailNewOffer($this->user, $this->offer));
     }
 

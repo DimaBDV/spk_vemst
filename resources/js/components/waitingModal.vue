@@ -41,8 +41,8 @@
                 </div>
 
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" @click="deleteOffer">Удалить</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    <!--<button type="button" class="btn btn-primary" disabled>Сохранить</button>-->
                 </div>
             </div>
         </div>
@@ -74,6 +74,7 @@
                 description: '',
                 url: '',
                 deadline: null,
+                id: null,
 
                 loadingError: false
             }
@@ -87,6 +88,7 @@
                 this.description= '';
                 this.url= '';
                 this.deadline= null;
+                this.id = null;
 
                 this.loadingError = false;
             },
@@ -95,6 +97,7 @@
              * @param data
              */
             openModal: function (data) {
+                this.id = data.id;
                 this.section = data.section;
                 this.theme = data.theme;
                 this.mainText = data.mainText;
@@ -148,6 +151,17 @@
                         url: file.url
                     })
                 }
+            },
+            deleteOffer(){
+                axios.delete('/webapi/offer/delete/' + this.id)
+                    .then(response => {
+                        this.$root.$emit('DeleteItemOnWaitingList', this.id);
+                        $('#modal').modal('hide');
+                        console.log('Ok');
+                    })
+                    .catch(error => {
+                        //TODO: вывод ошибок
+                    });
             }
         }
     }

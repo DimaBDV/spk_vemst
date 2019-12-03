@@ -50,4 +50,20 @@ class UserRepository extends CoreRepository
         return $result;
     }
 
+    /**
+     * Найти пользователя по Id
+     * @param $id
+     * @return Model
+     */
+    public function findUserById($id)
+    {
+        $result = $this->startConditions()
+            ->where('id', $id)
+//            ->toBase()
+            ->get()
+            ->first();
+
+        return $result;
+    }
+
 }

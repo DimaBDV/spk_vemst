@@ -42,4 +42,34 @@ class OfferRepository extends CoreRepository
         return $result;
     }
 
+    /**
+     * Получить модель Offer по id
+     * @param $id
+     * @return Model
+     */
+    public function getOfferById($id){
+
+        $result = $this->startConditions()
+            ->find($id);
+
+        return $result;
+    }
+
+    /**
+     * Поиск удалённой (архивной) записи по id
+     * @param $id
+     * @return mixed
+     */
+    public function getTrashedById($id){
+
+        $result = $this->startConditions()
+            ->withTrashed()
+            ->where('id', $id)
+            ->get()
+            ->first();
+
+        return $result;
+    }
+
+
 }

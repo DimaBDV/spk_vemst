@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Offer;
 use App\User;
-use http\Env\Response;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OfferPolicy
@@ -52,7 +52,7 @@ class OfferPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function store(User $user)
     {
         return $user->isActive();
     }
@@ -78,11 +78,11 @@ class OfferPolicy
      * @param  \App\Offer  $offer
      * @return mixed
      */
-    public function delete(User $user, Offer $offer)
+    public function destroy(User $user, Offer $offer)
     {
         return $user->id === $offer->user_id
             ? Response::allow()
-            : Response::deny('Сожалеем но мы не можем вам этого позволить, не вы создали этот запрос');;
+            : Response::deny('Сожалеем но мы не можем вам этого позволить, не вы создали этот запрос');
     }
 
     /**
@@ -108,6 +108,8 @@ class OfferPolicy
      */
     public function forceDelete(User $user, Offer $offer)
     {
-        return false;
+        return $user->id === $offer->user_id
+            ? Response::allow()
+            : Response::deny('Сожалеем но мы не можем вам этого позволить, не вы создали этот запрос');
     }
 }

@@ -41,6 +41,7 @@ Route::middleware(['verified'])->group(function () {
 
     Route::prefix('offer')->group(function () {
         Route::get('/', "Users\OfferController@create")->name('offer');
+        Route::get('/restore/{id}', 'Users\OfferController@restore')->where('id', '[0-9]+')->name('offer.restore');
     });
 
     Route::prefix('admin')->group(function () {
@@ -57,6 +58,7 @@ Route::middleware(['verified'])->group(function () {
         Route::prefix('offer')->group(function () {
 
             Route::get('/list', "Users\OfferController@index");
+            Route::delete('/delete/{id}', 'Users\OfferController@destroy')->where('id', '[0-9]+');
 
         });
 

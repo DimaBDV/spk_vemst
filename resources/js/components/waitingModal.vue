@@ -10,6 +10,7 @@
                 </div>
 
                 <div class="modal-body">
+                    <!-- TODO: Раскидать блок ниже по разделам, чтобы было понятно что к чему и почему -->
                     <p v-if="theme !=='' ">{{ theme }}</p>
                     <p v-if="mainText !=='' ">{{ mainText }}</p>
                     <p v-if="description !=='' ">{{ description }}</p>
@@ -25,8 +26,8 @@
                                 <p>{{item.name}}</p>
                             </div>
                         </div>
-                        <div class="row" v-else>
-                            <i class="fas fa-file "></i>
+                        <div class="row px-3" v-else>
+                            <i class="fas fa-file mt-1 mr-3"></i>
                             <p>{{item.name}}</p>
                         </div>
                     </div>
@@ -41,6 +42,8 @@
                 </div>
 
                 <div class="modal-footer">
+                    <!--TODO: Кнопка и логика работы функции "Редактировать" -->
+                    <!--<button type="button" class="btn btn-warning" @click="" disabled>Редактировать</button>-->
                     <button type="button" class="btn btn-danger" @click="deleteOffer">Удалить</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                 </div>
@@ -153,15 +156,20 @@
                 }
             },
             deleteOffer(){
-                axios.delete('/webapi/offer/delete/' + this.id)
-                    .then(response => {
-                        this.$root.$emit('DeleteItemOnWaitingList', this.id);
-                        $('#modal').modal('hide');
-                        console.log('Ok');
-                    })
-                    .catch(error => {
-                        //TODO: вывод ошибок
-                    });
+                if (confirm('Вы действительно хотите УДАЛИТЬ данное проедложение?')) {
+
+                    axios.delete('/webapi/offer/delete/' + this.id)
+                        .then(response => {
+                            this.$root.$emit('DeleteItemOnWaitingList', this.id);
+                            $('#modal').modal('hide');
+                            console.log('Ok');
+                        })
+                        .catch(error => {
+                            //TODO: вывод ошибок
+                        });
+                } else {
+                    return false;
+                }
             }
         }
     }

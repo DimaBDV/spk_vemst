@@ -132,15 +132,14 @@ trait offerTrait
     /**
      * Создаёт новое уведомление
      */
-    public function fireNotify(){
-//        FIXME: swiftMailer даёт сбой, а так же надо какой-то обработчик ошибок сюда заебенить
+    public function fireNotify()
+    {
         $admins = app(UserRepository::class);
         $admins = $admins->getAllAdmins();
-//        $this->dispatch(new NewOfferJob($this->user, $this->offer));
         $admins->each(function ($item, $key){
             return $item->notify(new NewOfferNotification($this->offer));
         });
-//        $this->dispatch(new SendEmailNewOffer($this->user, $this->offer));
+//        $this->dispatch(new NewOfferJob($this->user, $this->offer));
     }
 
 

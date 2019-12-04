@@ -2794,6 +2794,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -2918,13 +2921,17 @@ __webpack_require__.r(__webpack_exports__);
     deleteOffer: function deleteOffer() {
       var _this3 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]('/webapi/offer/delete/' + this.id).then(function (response) {
-        _this3.$root.$emit('DeleteItemOnWaitingList', _this3.id);
+      if (confirm('Вы действительно хотите УДАЛИТЬ данное проедложение?')) {
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]('/webapi/offer/delete/' + this.id).then(function (response) {
+          _this3.$root.$emit('DeleteItemOnWaitingList', _this3.id);
 
-        $('#modal').modal('hide');
-        console.log('Ok');
-      })["catch"](function (error) {//TODO: вывод ошибок
-      });
+          $('#modal').modal('hide');
+          console.log('Ok');
+        })["catch"](function (error) {//TODO: вывод ошибок
+        });
+      } else {
+        return false;
+      }
     }
   }
 });
@@ -40959,8 +40966,8 @@ var render = function() {
                               _c("p", [_vm._v(_vm._s(item.name))])
                             ])
                           ])
-                        : _c("div", { staticClass: "row" }, [
-                            _c("i", { staticClass: "fas fa-file " }),
+                        : _c("div", { staticClass: "row px-3" }, [
+                            _c("i", { staticClass: "fas fa-file mt-1 mr-3" }),
                             _vm._v(" "),
                             _c("p", [_vm._v(_vm._s(item.name))])
                           ])

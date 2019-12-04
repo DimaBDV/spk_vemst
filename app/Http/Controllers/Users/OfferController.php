@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Requests\offerRequest;
 use App\Jobs\OfferDeleteJob;
+use App\Jobs\OfferRestoreJob;
 use App\Offer;
 use App\Traits\offerTrait;
 use Illuminate\Http\Request;
@@ -160,15 +161,13 @@ class OfferController extends Controller
         $this->authorize('restore', $offer);
 
         if( $offer->restore() ){
-            //TODO: уведомление, любое, об успешнов восстановлении
+            $this->dispatch(new OfferRestoreJob($offer));
             return redirect('/');
         }
         else
         {
             return abort(409, 'Упс, что-то пошло не так.');
         }
-
-//        TODO: Добавить уведомление об восстановлении, а надо?
 
     }
 

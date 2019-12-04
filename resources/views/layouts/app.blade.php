@@ -9,18 +9,57 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <meta name="theme-color" content="#101924" />
 </head>
+
+<style type="text/css">
+    .preloader{
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        z-index: 10;
+        transition: 1s all;
+        opacity: 1;
+        visibility: visible;
+    }
+    .preloader>.loader{
+        width: 75px;
+        height: 75px;
+        border: 10px solid #293e59;
+        border-radius: 50%;
+        border-top-color: yellow;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-animation: 2s load infinite linear;
+        -o-animation: 2s load infinite linear;
+        animation: 2s load infinite linear;
+    }
+    .preloader.done{
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    @keyframes load {
+        0%{
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100%{
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+</style>
+
 <body>
+
+<div id="preloader" class="preloader">
+    <div class="loader"></div>
+</div>
+
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
         <div class="container-fluid">
@@ -86,5 +125,17 @@
         @yield('content')
     </main>
 </div>
+
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}" defer></script>
+<script src="{{ asset('js/preloader.js') }}" defer></script>
+
+<!-- Fonts -->
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+<!-- Styles -->
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </body>
 </html>

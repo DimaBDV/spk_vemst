@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -48,4 +49,8 @@ class Offer extends Model
         'publishing' => 'datetime',
         'complete' => 'bool'
     ];
+
+    public function createTimeForHuman(){
+        return $this->created_at = Carbon::parse($this->created_at)->diffForHumans();
+    }
 }

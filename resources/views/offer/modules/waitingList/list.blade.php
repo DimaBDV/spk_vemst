@@ -1,2 +1,3 @@
 {{-- тут должен жить Vue компонент --}}
-<offer-form></offer-form>
+<waiting-list></waiting-list>
+<waiting-modal></waiting-modal>

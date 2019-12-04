@@ -8,8 +8,11 @@
 
 namespace App\Traits;
 
-
+use App\Jobs\NewOfferJob;
+use App\Notifications\NewOfferNotification;
 use App\Offer;
+use App\Repository\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 trait offerTrait
@@ -38,11 +41,12 @@ trait offerTrait
      */
     private function saveOffer( $request){
         $offer = new Offer();
+        $this->user = $request->user();
 
         $offer->section = $request->get('section');
         $offer->theme = $request->get('theme');
         $offer->mainText = $request->get('mainText');
-        $offer->files = json_decode( $request->get('files') );
+        $offer->files = $request->get('files');
         $offer->description = $request->get('description');
         $offer->url = $request->get('url');
         $offer->complete = false;
@@ -66,6 +70,12 @@ trait offerTrait
     private $status;
     private $offer;
     private $error;
+
+    /**
+     * Сендер
+     * @var \App\User
+     */
+    private $user;
 
     /**
      * Установка статуса
@@ -100,13 +110,15 @@ trait offerTrait
     public function checkComplete(){
         if($this->status){
             $offer = $this->offer;
+            $this->fireNotify();
             return [
                 'message' => [
                     'id' => $offer->id,
                     'section' => $offer->section,
                     'theme' => $offer->theme
                 ],
-                'code' => 201
+                'code' => 201,
+                'offer' => $offer
             ];
         }
         else{
@@ -117,6 +129,18 @@ trait offerTrait
         }
     }
 
+    /**
+     * Создаёт новое уведомление
+     */
+    public function fireNotify()
+    {
+        $admins = app(UserRepository::class);
+        $admins = $admins->getAllAdmins();
+        $admins->each(function ($item, $key){
+            return $item->notify(new NewOfferNotification($this->offer));
+        });
+//        $this->dispatch(new NewOfferJob($this->user, $this->offer));
+    }
 
 
 }

@@ -62,10 +62,9 @@ class NewOfferNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'offer_id' => $this->offer->id,     //
-            'section' => $this->offer->section, //
-            'theme' => $this->offer->theme,     //
-            'user_id' => $this->offer->user_id, //
+            'offer_id' => $this->offer->id,
+            'section' => $this->offer->section,
+            'theme' => $this->offer->theme,
         ];
     }
 }

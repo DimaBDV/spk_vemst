@@ -32,7 +32,7 @@ class OfferRestoreNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -59,7 +59,9 @@ class OfferRestoreNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'offer_id' => $this->offer->id,
+            'section' => $this->offer->section,
+            'theme' => $this->offer->theme,
         ];
     }
 }

@@ -32,7 +32,7 @@ class OfferRestoreToAdminNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail','database'];
     }
 
     /**
@@ -61,7 +61,9 @@ class OfferRestoreToAdminNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            // TODO: Уведомление в DB о восстановлении
+            'offer_id' => $this->offer->id,
+            'section' => $this->offer->section,
+            'theme' => $this->offer->theme,
         ];
     }
 }

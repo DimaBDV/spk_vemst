@@ -31,7 +31,13 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/test', function (){
-    return view('user.test');
+    $user = App\User::find(1);
+
+    foreach ($user->notifications as $notification) {
+        if($notification->type == App\Notifications\NewOfferNotification::class){
+            dd($notification->data);
+        }
+    }
 })->middleware(['auth', 'verified']);
 
 Route::post('/upload', 'Support\FileController@store')->name('upload.file');

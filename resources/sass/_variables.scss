@@ -21,3 +21,7 @@ $cyan: #6cb2eb;
 $theme-colors: (
         "primary": #293e59,
 );
+
+.fixed-bottom{
+  z-index: 9 !important;
+}

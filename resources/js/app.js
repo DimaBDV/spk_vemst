@@ -25,6 +25,10 @@ Vue.component('offer-form', require('./components/offerForm.vue').default);
 Vue.component('waiting-list', require('./components/waiting.vue').default);
 Vue.component('waiting-modal', require('./components/waitingModal.vue').default);
 
+Vue.component('user-index', require('./components/user/index.vue').default);
+Vue.component('user-module-profile', require('./components/user/modules/profile.vue').default);
+Vue.component('user-module-notify', require('./components/user/modules/notify.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

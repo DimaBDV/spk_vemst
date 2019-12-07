@@ -24,21 +24,24 @@
 |
 */
 
+
+/**
+ * Сервис функции
+ */
+Route::pattern('id', '\d+');
+Route::pattern('uuid', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+/**
+ * -----------------------------------------------------------------------------------------
+ */
+
+
 Route::get('/', 'WelcomeController@index');
 
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/test', function (){
-    $user = App\User::find(1);
-
-    foreach ($user->notifications as $notification) {
-        if($notification->type == App\Notifications\NewOfferNotification::class){
-            dd($notification->data);
-        }
-    }
-})->middleware(['auth', 'verified']);
+//Route::get('/test/{id}', 'Users\NotifyController@destroy')->middleware(['auth', 'verified']);
 
 Route::post('/upload', 'Support\FileController@store')->name('upload.file');
 
@@ -47,7 +50,7 @@ Route::middleware(['verified'])->group(function () {
 
     Route::prefix('offer')->group(function () {
         Route::get('/', "Users\OfferController@create")->name('offer');
-        Route::get('/restore/{id}', 'Users\OfferController@restore')->where('id', '[0-9]+')->name('offer.restore');
+        Route::get('/restore/{id}', 'Users\OfferController@restore')->name('offer.restore');
     });
 
     Route::prefix('admin')->group(function () {
@@ -56,15 +59,23 @@ Route::middleware(['verified'])->group(function () {
 
     Route::prefix('webapi')->group(function () {
 
+        Route::get('me', 'HomeController@me');
+
+        Route::prefix('notify')->group(function (){
+            Route::get('/', 'Users\NotifyController@index');
+            Route::post('/read_all', 'Users\NotifyController@update');
+            Route::delete('/delete/{uuid}', 'Users\NotifyController@destroy');
+        });
+
         Route::post('upload', 'Support\FileController@store');
         Route::post('createnewoffer', 'Users\OfferController@store')->middleware('verified');
 
 
-        Route::get('file/show/{id}','Support\FileController@show')->where('id', '[0-9]+');
+        Route::get('file/show/{id}','Support\FileController@show');
         Route::prefix('offer')->group(function () {
 
             Route::get('/list', "Users\OfferController@index");
-            Route::delete('/delete/{id}', 'Users\OfferController@destroy')->where('id', '[0-9]+');
+            Route::delete('/delete/{id}', 'Users\OfferController@destroy');
 
         });
 

@@ -68,6 +68,13 @@
                 {{--<img src="{{ asset('img/logo.png') }}" alt="">--}}
                 {{ config('app.name', 'Laravel') }}
             </a>
+
+            @if ( !Auth::user()->unreadNotifications->isEmpty() )
+                <a href="{{route('home')}}" class="nav-item nav-link text-white ml-2">
+                    <i class="fas fa-bell"></i>
+                </a>
+            @endif
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
@@ -96,6 +103,7 @@
                             </li>
                         @endif
                     @else
+
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -103,10 +111,11 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs"></i> {{ __('Настройки') }}
+                                <a class="dropdown-item" href="{{ route('home') }}">
+                                    <i class="fas fa-user mr-1"></i> {{ __('Профиль') }}
                                 </a>
-                                <hr/>
+
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

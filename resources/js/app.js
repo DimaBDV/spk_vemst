@@ -28,6 +28,7 @@ Vue.component('waiting-modal', require('./components/waitingModal.vue').default)
 Vue.component('user-index', require('./components/user/index.vue').default);
 Vue.component('user-module-profile', require('./components/user/modules/profile.vue').default);
 Vue.component('user-module-notify', require('./components/user/modules/notify.vue').default);
+Vue.component('user-module-settings', require('./components/user/modules/settings.vue').default);
 
 
 /**

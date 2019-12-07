@@ -6,7 +6,7 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Уведомления</h5>
                         <hr/>
-                        <div class="container" v-if="allNotify != null">
+                        <div class="container" v-if="allNotify !== null && allNotify.length !== 0">
                             <div class="row">
                                 <div class="col custom-overflow">
 
@@ -32,6 +32,15 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="container" v-else>
+                            <p class="h2 text-center text-muted">
+                                <i class="fas fa-ghost"></i>
+                            </p>
+                            <p class="h5 text-center text-muted">
+                                Здесь поселился призрак
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -62,6 +71,7 @@
                 allNotify: null,
                 unreadNotify: null,
 
+                //TODO: До прода!!!, разобраться с типами уведомлений, добавить сюда все!!!
                 newOffer: 'App\\Notifications\\NewOfferNotification',
 
                 URL_NOTIFY_MARK_AS_READ:'/webapi/notify/read_all',

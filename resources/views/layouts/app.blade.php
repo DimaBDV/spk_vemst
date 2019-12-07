@@ -65,7 +65,12 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{--TODO: выпросить адекватное лого, а то у этого огромные поля--}}
-                {{--<img src="{{ asset('img/logo.png') }}" alt="">--}}
+                <img class="" src="{{ asset('img/logo.png') }}" alt=""
+                     style="
+                        width: 79px;
+                        background-color: rgb(41, 62, 89);
+                        border-radius: 0.3rem;
+                ">
                 {{ config('app.name', 'Laravel') }}
             </a>
 
@@ -111,8 +116,14 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
                                 <a class="dropdown-item" href="{{ route('home') }}">
                                     <i class="fas fa-user mr-1"></i> {{ __('Профиль') }}
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('offer') }}">
+                                    <i class="fas fa-edit mr-1"></i> {{ __('Предложить') }}
                                 </a>
 
                                 <div class="dropdown-divider"></div>

@@ -2,8 +2,8 @@
     <div class="container-fluid">
 
         <Profile v-show="toggled0"></Profile>
+        <Settings v-show="toggled1"></Settings>
         <Notify v-show="toggled2"></Notify>
-        <h2 v-if="toggled1" class="text-center">Извините, данная функция ещё не готова.</h2>
 
         <!-- TODO: Придумать как оптимизировать код, ибо эта тема с bool полная хуйня -->
         <nav class="navbar fixed-bottom navbar-dark bg-primary">
@@ -44,14 +44,16 @@
 </template>
 
 <script>
-    import Profile from './modules/profile.vue'
-    import Notify from './modules/notify.vue'
+    import Profile  from './modules/profile.vue';
+    import Notify   from './modules/notify.vue';
+    import Settings from './modules/settings.vue';
 
     import axios from 'axios';
     export default {
         components: {
             Profile,
-            Notify
+            Notify,
+            Settings
         },
         mounted() {
 

@@ -49,16 +49,16 @@
 
         <!-- Описание в окне уведомления -->
         <div v-if="section.toggled" class="alert alert-warning alert-dismissible fade show" role="alert">
-            <h4 class="alert-heading">Описание раздела.</h4>
+            <h4 class="alert-heading">Описание раздела</h4>
             <p v-if="section.newsToggled">{{ section.newsDescription }}</p>
             <p v-if="section.scheduleToggled">{{ section.scheduleDescription }}</p>
             <p v-if="section.docsToggled">{{ section.docsDescription }}</p>
             <p v-if="section.anyToggled">{{ section.anyDescription }}</p>
 
             <hr>
-            <p class="mb-0">Просим серьёзно отнестить к вышеуказанным требованиям.
+            <p class="mb-0">Просим серьёзно отнестись к вышеуказанным требованиям.
                 <br>
-                Это облегчит работу каждой из сторон и улучшит продуктивность работы.
+                Это облегчит работу каждой из сторон и повысит продуктивность.
             </p>
 
 
@@ -85,7 +85,7 @@
                             </button>
                         </div>
                     </div>
-                    <small id="ThemeHelp" class="form-text text-muted">Данное поле используется для указания темы новости. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                    <small id="ThemeHelp" class="form-text text-muted">Данное поле используется для указания темы новости. Для очистки поля нажмите значок <i class="fas fa-trash"></i></small>
                 </div>
 
                 <div class="form-group row">
@@ -99,7 +99,7 @@
                             </button>
                         </div>
                     </div>
-                    <small id="TextAreaHelp" class="form-text text-muted">Данное поле используется для указания основного текста новости. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                    <small id="TextAreaHelp" class="form-text text-muted">Данное поле используется для указания основного текста новости. Для очистки поля нажмите значок <i class="fas fa-trash"></i></small>
                 </div>
 
             </div>
@@ -119,7 +119,7 @@
                             </button>
                         </div>
                     </div>
-                    <small id="SectionHelp" class="form-text text-muted">Данное поле используется для указания раздела в который требуется внести изменение. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                    <small id="SectionHelp" class="form-text text-muted">Данное поле используется для указания раздела, в который требуется внести изменение. Для очистки поля нажмите значок <i class="fas fa-trash"></i></small>
                 </div>
 
                 <div class="form-group row">
@@ -133,7 +133,7 @@
                             </button>
                         </div>
                     </div>
-                    <small id="UrlHelp" class="form-text text-muted">Данное поле используется для указания ссылки на страницу где требуется изменить / добавить документ. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                    <small id="UrlHelp" class="form-text text-muted">Данное поле используется для указания ссылки на страницу, где требуется изменить или добавить документ. Для очистки поля нажмите значок <i class="fas fa-trash"></i></small>
                 </div>
 
             </div>
@@ -167,7 +167,7 @@
                             </button>
                         </div>
                     </div>
-                    <small id="anyThemeHelp" class="form-text text-muted">Используйте данное поля для указания тематики вашего предложения. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                    <small id="anyThemeHelp" class="form-text text-muted">Используйте данное поля для указания тематики вашего предложения. Для очистки поля нажмите значок <i class="fas fa-trash"></i></small>
                 </div>
 
                 <div class="form-group row">
@@ -181,7 +181,7 @@
                             </button>
                         </div>
                     </div>
-                    <small id="anyTextAreaHelp" class="form-text text-muted">Данное поле обязательно для заполнения. Опишите что именно вы хотите предложить. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                    <small id="anyTextAreaHelp" class="form-text text-muted">Данное поле обязательно для заполнения. Опишите что именно вы хотите предложить. Для очистки поля нажмите значок <i class="fas fa-trash"></i></small>
                 </div>
 
             </div>
@@ -199,7 +199,7 @@
                         </button>
                     </div>
                 </div>
-                <small id="DescriptionHelp" class="form-text text-muted">Данное поле используется для указания какиго-либо примечания или коментария. Для очистки поля нажмите значёк <i class="fas fa-trash"></i></small>
+                <small id="DescriptionHelp" class="form-text text-muted">Данное поле используется для указания какого-либо примечания или комментария. Для очистки поля нажмите значок <i class="fas fa-trash"></i></small>
             </div>
             <!--_________________________________________-->
             <hr class="row">
@@ -305,15 +305,15 @@
 
                     schedule: 'Расписание',
                     scheduleToggled: false,
-                    scheduleDescription:'Данный раздел предназначен для изменений в расписании, по отделениям "Очное" и "Заочное".',
+                    scheduleDescription:'Данный раздел предназначен для внесения изменений в расписании занятий по отделениям (Очное и Заочное).',
 
                     docs: 'Документы',
                     docsToggled: false,
-                    docsDescription:'Данный раздел предназначен для документации, положений, РУМО и т.д. Заполняя данный раздел пожалуйста укажите ссылку страницы на которой требуется изменить/добавить документ.',
+                    docsDescription:'Данный раздел предназначен для документации, положений, РУМО и т.д. Заполняя данный раздел, пожалуйста, укажите ссылку страницы, на которой требуется изменить или добавить документ.',
 
                     any: 'Другое',
                     anyToggled: false,
-                    anyDescription: 'Используйте данный раздел если другие Вам не подходят.',
+                    anyDescription: 'Используйте данный раздел, если другие Вам не подходят.',
 
                     toggled: false,
                 },

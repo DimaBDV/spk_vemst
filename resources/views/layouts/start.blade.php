@@ -10,14 +10,15 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ mix('/js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+    <meta name="theme-color" content="#101924" />
 </head>
 <body>
 <div id="app">
@@ -28,10 +29,9 @@
 <style>
     body {
         background: url( {{ asset('img/welcomeBG.jpg') }} ) no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
         background-size: cover;
-        -o-background-size: cover;
+        height: 100vh;
+        /*overflow: hidden;*/
     }
 </style>
 </body>

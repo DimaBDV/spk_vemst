@@ -53,4 +53,11 @@ class Offer extends Model
     public function createTimeForHuman(){
         return $this->created_at = Carbon::parse($this->created_at)->diffForHumans();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

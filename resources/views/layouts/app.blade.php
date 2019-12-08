@@ -122,6 +122,12 @@
                                 </a>
 
                                 <div class="dropdown-divider"></div>
+                                @if(Auth::user()->isAdmin())
+                                    <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                        <i class="fas fa-dungeon mr-1"></i> {{ __('Админка') }}
+                                    </a>
+                                @endif
+
                                 <a class="dropdown-item" href="{{ route('offer') }}">
                                     <i class="fas fa-edit mr-1"></i> {{ __('Предложить') }}
                                 </a>

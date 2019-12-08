@@ -13,7 +13,7 @@ class WelcomeController extends Controller
     public function index(){
         if(Auth::check()){
             if( Auth::user()->isAdmin() ){
-                return redirect('home');
+                return redirect(route('admin.index'));
             }
 
             return redirect('offer');

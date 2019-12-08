@@ -3,14 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\BaseController as Controller;
+use App\Jobs\OfferArchiveJob;
+use App\Jobs\OfferCompleteJob;
+use App\Repository\FileRepository;
+use App\Repository\OfferRepository;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OfferController extends Controller
 {
 
+    /**
+     * Репозиторий оффер
+     * @var \Illuminate\Contracts\Foundation\Application|mixed
+     */
+    protected $offerRepository;
+
+    protected $fileRepository;
+
     public function __construct()
     {
         parent::__construct();
+        $this->offerRepository = app(OfferRepository::class);
+        $this->fileRepository = app(FileRepository::class);
     }
 
     /**
@@ -18,9 +34,12 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $this->checkToAdmin($request->user());
+
+        $offer = $this->offerRepository->getAllForAdmin();
+        return view('admin.index', compact('offer'));
     }
 
     /**
@@ -28,9 +47,10 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $this->checkToAdmin($request->user());
+
     }
 
     /**
@@ -41,7 +61,7 @@ class OfferController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->checkToAdmin($request->user());
     }
 
     /**
@@ -50,9 +70,20 @@ class OfferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $this->checkToAdmin($request->user());
+        $offer = $this->offerRepository->getOfferById($id);
+        $fileId = $ids = explode(',', trim($offer->files, '[\]'));
+        $file = collect();
+
+        foreach ($fileId as $item){
+            $file->push( $this->fileRepository->getById($item) );
+        }
+
+//        $deletedOffer = $this->offerRepository->getTrashedById($id);
+        return view('admin.offerShow', compact(['offer', 'file']));
+
     }
 
     /**
@@ -61,9 +92,9 @@ class OfferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $this->checkToAdmin($request->user());
     }
 
     /**
@@ -75,7 +106,17 @@ class OfferController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->checkToAdmin($request->user());
+
+        $offer = $this->offerRepository->getOfferbyId($id);
+
+        $offer->update(['complete' => true]);
+        $offer->delete();
+
+        $this->dispatch(new OfferCompleteJob($offer));
+
+        return redirect(route('admin.index'));
+
     }
 
     /**
@@ -84,8 +125,34 @@ class OfferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $this->checkToAdmin($request->user());
+
+        $message = $request->get('description');
+        $offer = $this->offerRepository->getOfferbyId($id);
+
+        $offer->delete();
+
+        $this->dispatch(new OfferArchiveJob($offer, $message));
+
+        return redirect(route('admin.index'));
     }
+
+    /**
+     * FIXME: Исправить, и сделать норм проверку на админа!!!!
+     * Проверка на админа КРИВОКОД ПИЗДА!!!!
+     * @param $user
+     */
+    protected function checkToAdmin($user){
+        if (!$user->isAdmin()){
+            return abort(404);
+        }
+    }
+
+
+   public function downloadFile($id){
+        $file = $this->fileRepository->getById($id);
+       return response()->download('storage/' . $file->path, $file->name);
+   }
 }

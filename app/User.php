@@ -52,4 +52,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isActive(){
         return $this->group != 'B';
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function offer(){
+        return $this->hasMany(Offer::class);
+    }
 }

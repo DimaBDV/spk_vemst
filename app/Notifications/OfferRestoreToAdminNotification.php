@@ -47,8 +47,7 @@ class OfferRestoreToAdminNotification extends Notification
                     ->subject('Восстановление предложения')
                     ->greeting('Предложение в раздел ' . $this->offer->section . ' было восстановлено.')
                     ->line('Обработайте его как можно скорее.')
-//                    TODO: ссылка на переход к обработке предложения
-                    ->action('Перейти к обработке', url('/'))
+                    ->action('Перейти к обработке', url( route('admin.offer.show', $this->offer->id) ))
                     ->line('Спасибо за использование нашего сервиса!');
     }
 

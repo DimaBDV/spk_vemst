@@ -22,7 +22,7 @@ class OfferRepository extends CoreRepository
     }
 
     /**
-     * Получить Все категории Мастера по его Id
+     * Используется у пользователя для построения списка предложений
      * @method getAll($userId)
      * @param int $userId
      * @return mixed
@@ -71,5 +71,34 @@ class OfferRepository extends CoreRepository
         return $result;
     }
 
+    /**
+     * Поиск всех не выполненных предложений с подтяжкой данных пользователя
+     * @return mixed
+     */
+    public function getAllForAdmin(){
+        $offerColumns = [
+            'id',
+            'section',
+            'theme',
+            'description',
+            'user_id'
+        ];
+
+        $result = $this->startConditions()
+            ->select($offerColumns)
+            ->orderBy('id', 'desc')
+            ->with(['user:id,name,fathers_name,unit'])
+            ->get();
+
+        return $result;
+    }
+
+//    public function getOfferByIdToShowAdmin($id){
+//        $result = $this->startConditions()
+//            ->find($id);
+//
+//
+//        return $result;
+//    }
 
 }

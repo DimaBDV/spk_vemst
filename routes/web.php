@@ -55,7 +55,12 @@ Route::middleware(['verified'])->group(function () {
     });
 
     Route::prefix('admin')->group(function () {
-        Route::get('/', "Admin\OfferController@index");
+        Route::get('/', "Admin\OfferController@index")->name('admin.index');
+        Route::get('/show/{id}', "Admin\OfferController@show")->name('admin.offer.show');
+        Route::get('/download/file/{id}', "Admin\OfferController@downloadFile")->name('admin.offer.download.file');
+
+        Route::put('/complete/{id}', "Admin\OfferController@update")->name('admin.offer.complete');
+        Route::delete('/delete/{id}', "Admin\OfferController@destroy")->name('admin.offer.delete');
     });
 
     Route::prefix('webapi')->group(function () {

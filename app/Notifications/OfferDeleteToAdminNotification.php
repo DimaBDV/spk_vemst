@@ -48,7 +48,7 @@ class OfferDeleteToAdminNotification extends Notification
                     ->subject('Удаление предложения.')
                     ->greeting('Было уладено предложение из раздела ' . $this->offer->section)
                     ->line('Ну и заябисто  (*¯︶¯*) Меньше работы больше кислорода')
-                    ->action('Перейти к панели администратора', url('/'))
+                    ->action('Перейти к панели администратора', url(route('admin.index')))
 //                TODO: Прихерачить кнопку просмотра архива
                     ->line('Спасибо за использование нашего сервиса!');
     }

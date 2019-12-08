@@ -99,7 +99,7 @@
             return{
                 allNotify: null,
                 unreadNotify: null,
-                
+
                 newOffer: 'App\\Notifications\\NewOfferNotification',
                 offerDelete: 'App\\Notifications\\OfferDeleteNotification',
                 offerRestore: 'App\\Notifications\\OfferRestoreNotification',

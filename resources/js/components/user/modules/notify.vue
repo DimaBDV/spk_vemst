@@ -82,12 +82,12 @@
     import axios from 'axios';
     export default {
         mounted() {
-            console.log('Component mounted.');
+            // console.log('Component notify mounted.');
 
             this.$root.$on('userNotify', data => {
                 this.allNotify = data.allNotifications;
                 this.unreadNotify = data.unreadNotifications;
-                console.log(this.notify)
+                // console.log(this.notify)
             });
 
             this.$root.$on('userNotifyMarkAsRead', () => {

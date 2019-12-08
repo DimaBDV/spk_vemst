@@ -38,7 +38,7 @@
     import axios from 'axios';
     export default {
         mounted() {
-            console.log('Component user settings mounted.');
+            // console.log('Component user settings mounted.');
             
         },
         data(){

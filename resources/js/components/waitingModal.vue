@@ -136,7 +136,7 @@
              * @param file
              */
             checkFile(file){
-                console.log('test regex ...' + file.type + ' '+ file.name)
+                // console.log('test regex ...' + file.type + ' '+ file.name)
                 let reImage = new RegExp("image\\/");
                 // let reApp = new RegExp("application\\/");
 
@@ -162,7 +162,7 @@
                         .then(response => {
                             this.$root.$emit('DeleteItemOnWaitingList', this.id);
                             $('#modal').modal('hide');
-                            console.log('Ok');
+                            // console.log('Ok');
                         })
                         .catch(error => {
                             //TODO: вывод ошибок

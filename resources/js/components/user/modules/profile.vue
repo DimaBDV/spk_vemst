@@ -58,11 +58,11 @@
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.');
+            // console.log('Component profile mounted.');
 
             this.$root.$on('userMe', data => {
                 this.user = data;
-                console.log(this.user)
+                // console.log(this.user)
             })
         },
         data(){

@@ -1,6 +1,6 @@
 <hr/>
 <h5 class="text-center">Прикреплённые файлы</h5>
-@if( isset($file) )
+@if( isset($file) && !empty($file[0]))
     @foreach($file as $item)
         <a class="btn btn-outline-success my-2" href="{{ route('admin.offer.download.file', $item->id) }}">
             {{ $item->name  }}

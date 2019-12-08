@@ -27,6 +27,35 @@
                                                 <p>Ваше предложение в раздел <strong>{{notify.data.section}}</strong> успешно доваблено</p>
                                                 <p>Дата создания: {{ notify.created_at }}</p>
                                             </div>
+
+                                            <div v-if="notify.type === offerDelete">
+                                                <h4 class="alert-heading">Удаление предложения</h4>
+                                                <hr/>
+                                                <p>Вы удалили предложение из раздела <strong>{{notify.data.section}}</strong></p>
+                                                <p>Дата удаления: {{ notify.created_at }}</p>
+                                            </div>
+
+                                            <div v-if="notify.type === offerRestore">
+                                                <h4 class="alert-heading">Восстановление предложения</h4>
+                                                <hr/>
+                                                <p>Предложение из раздела <strong>{{notify.data.section}}</strong> успешно восстановлено</p>
+                                                <p>Дата восстановления: {{ notify.created_at }}</p>
+                                            </div>
+
+                                            <div v-if="notify.type === offerDeleteToAdmin">
+                                                <h4 class="alert-heading">Удаление предложения</h4>
+                                                <hr/>
+                                                <p>Предложение из раздела <strong>{{notify.data.section}}</strong> удалено пользователем.</p>
+                                                <p>Дата удаления: {{ notify.created_at }}</p>
+                                            </div>
+
+                                            <div v-if="notify.type === offerRestoreToAdmin">
+                                                <h4 class="alert-heading">Восстановление предложения</h4>
+                                                <hr/>
+                                                <p>Предложение из раздела <strong>{{notify.data.section}}</strong> восстановлено пользователем.</p>
+                                                <p>Дата восстановления: {{ notify.created_at }}</p>
+                                            </div>
+
                                         </div>
 
                                     </div>
@@ -70,9 +99,13 @@
             return{
                 allNotify: null,
                 unreadNotify: null,
-
-                //TODO: До прода!!!, разобраться с типами уведомлений, добавить сюда все!!!
+                
                 newOffer: 'App\\Notifications\\NewOfferNotification',
+                offerDelete: 'App\\Notifications\\OfferDeleteNotification',
+                offerRestore: 'App\\Notifications\\OfferRestoreNotification',
+
+                offerDeleteToAdmin: 'App\\Notifications\\OfferDeleteToAdminNotification',
+                offerRestoreToAdmin: 'App\\Notifications\\OfferRestoreToAdminNotification',
 
                 URL_NOTIFY_MARK_AS_READ:'/webapi/notify/read_all',
                 URL_NOTIFY_DELETE: '/webapi/notify/delete/'

@@ -2858,6 +2858,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -2879,6 +2908,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       unreadNotify: null,
       //TODO: До прода!!!, разобраться с типами уведомлений, добавить сюда все!!!
       newOffer: 'App\\Notifications\\NewOfferNotification',
+      offerDelete: 'App\\Notifications\\OfferDeleteNotification',
+      offerRestore: 'App\\Notifications\\OfferRestoreNotification',
+      offerDeleteToAdmin: 'App\\Notifications\\OfferDeleteToAdminNotification',
+      offerRestoreToAdmin: 'App\\Notifications\\OfferRestoreToAdminNotification',
       URL_NOTIFY_MARK_AS_READ: '/webapi/notify/read_all',
       URL_NOTIFY_DELETE: '/webapi/notify/delete/'
     };
@@ -41665,6 +41698,107 @@ var render = function() {
                                     _c("p", [
                                       _vm._v(
                                         "Дата создания: " +
+                                          _vm._s(notify.created_at)
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              notify.type === _vm.offerDelete
+                                ? _c("div", [
+                                    _c("h4", { staticClass: "alert-heading" }, [
+                                      _vm._v("Удаление предложения")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("hr"),
+                                    _vm._v(" "),
+                                    _c("p", [
+                                      _vm._v(
+                                        "Вы удалили предложение из раздела "
+                                      ),
+                                      _c("strong", [
+                                        _vm._v(_vm._s(notify.data.section))
+                                      ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("p", [
+                                      _vm._v(
+                                        "Дата удаления: " +
+                                          _vm._s(notify.created_at)
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              notify.type === _vm.offerRestore
+                                ? _c("div", [
+                                    _c("h4", { staticClass: "alert-heading" }, [
+                                      _vm._v("Восстановление предложения")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("hr"),
+                                    _vm._v(" "),
+                                    _c("p", [
+                                      _vm._v("Предложение из раздела "),
+                                      _c("strong", [
+                                        _vm._v(_vm._s(notify.data.section))
+                                      ]),
+                                      _vm._v(" успешно восстановлено")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("p", [
+                                      _vm._v(
+                                        "Дата восстановления: " +
+                                          _vm._s(notify.created_at)
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              notify.type === _vm.offerDeleteToAdmin
+                                ? _c("div", [
+                                    _c("h4", { staticClass: "alert-heading" }, [
+                                      _vm._v("Удаление предложения")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("hr"),
+                                    _vm._v(" "),
+                                    _c("p", [
+                                      _vm._v("Предложение из раздела "),
+                                      _c("strong", [
+                                        _vm._v(_vm._s(notify.data.section))
+                                      ]),
+                                      _vm._v(" удалено пользователем.")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("p", [
+                                      _vm._v(
+                                        "Дата удаления: " +
+                                          _vm._s(notify.created_at)
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              notify.type === _vm.offerRestoreToAdmin
+                                ? _c("div", [
+                                    _c("h4", { staticClass: "alert-heading" }, [
+                                      _vm._v("Восстановление предложения")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("hr"),
+                                    _vm._v(" "),
+                                    _c("p", [
+                                      _vm._v("Предложение из раздела "),
+                                      _c("strong", [
+                                        _vm._v(_vm._s(notify.data.section))
+                                      ]),
+                                      _vm._v(" восстановлено пользователем.")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("p", [
+                                      _vm._v(
+                                        "Дата восстановления: " +
                                           _vm._s(notify.created_at)
                                       )
                                     ])

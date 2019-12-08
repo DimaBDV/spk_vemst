@@ -27,6 +27,7 @@
 
 /**
  * Сервис функции
+ * https://laravel-tricks.com/tricks/routing-patterns
  */
 Route::pattern('id', '\d+');
 Route::pattern('uuid', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');

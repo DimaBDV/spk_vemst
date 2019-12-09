@@ -40,19 +40,28 @@ class SetGroup extends Command
         $users = $this->getAllUser();
 
 
-        $this->info('Cписок всех пользователей');
+        $this->alert('Cписок всех пользователей');
         foreach ($users as $user){
-           $this->comment('id = ' . $user->id . ' | name = ' . $user->name . ' | fathers_name = ' . $user->fathers_name . ' | email = ' . $user->email . ' | group = ' . $user->group);
+           $this->info('id = ' . $user->id . ' | name = ' . $user->name . ' | fathers_name = ' . $user->fathers_name . ' | email = ' . $user->email . ' | group = ' . $user->group);
         }
 
+        $this->line('');
+
+        $this->alert('Укажите ID = 0 если Вы не хотите вносить изменения в статус пользователя и завершить работу команды');
         $id = $this->ask('Укажите ID пользователя которого требуется сделать администратором');
 
-        $this->comment('A - admin');
-        $this->comment('U - user');
 
-        $group = $this->ask('Укажите группу пользователя которую требуется установить пользователю');
+        if($id > 0){
+            $this->comment('A - admin');
+            $this->comment('U - user');
 
-        $this->setAdmin($id, $group);
+            $group = $this->ask('Укажите группу пользователя которую требуется установить пользователю');
+
+            $this->setAdmin($id, $group);
+        }
+        else{
+            $this->alert('Работа команды завершена.');
+        }
 
 
     }
@@ -66,7 +75,7 @@ class SetGroup extends Command
         $user->group = $group;
         $user->save();
 
-        $this->info('Текущий статус пользователя.');
+        $this->alert('Текущий статус пользователя.');
         $this->comment('id = ' . $user->id . ' | email = ' . $user->email . ' | group = ' . $user->group);
     }
 }

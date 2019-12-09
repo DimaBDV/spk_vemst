@@ -12,6 +12,17 @@
         @include('notify.notify')
 
         <div class="row justify-content-center">
+
+            @if($offer->deleted_at != null)
+                <div class="col-md-8 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="text-center text-muted">Это архивное предложение</h5>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
@@ -59,8 +70,11 @@
                 </div>
             </div>
 
+
+            @if($offer->deleted_at == null)
             <div class="col-md-8 mt-2">
                 <div class="card">
+
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.offer.complete', $offer->id ?? null) }}">
                             @method('PUT')
@@ -84,8 +98,11 @@
                         </form>
 
                     </div>
+
+
                 </div>
             </div>
+            @endif
 
         </div>
 

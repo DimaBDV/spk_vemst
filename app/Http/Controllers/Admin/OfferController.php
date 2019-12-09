@@ -74,6 +74,14 @@ class OfferController extends Controller
     {
         $this->checkToAdmin($request->user());
         $offer = $this->offerRepository->getOfferById($id);
+
+        if ($offer == null)
+        {
+            $offer = $this->offerRepository->getTrashedById($id);
+//            $request->session()->flash('status', 'Это предложение находится в архиве!');
+        }
+
+
         $fileId = $ids = explode(',', trim($offer->files, '[\]'));
         $file = collect();
 

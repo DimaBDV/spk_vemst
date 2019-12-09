@@ -21,18 +21,18 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
 
-                                            <div v-if="notify.type === newOffer">
-                                                <h4 class="alert-heading">Новое предложение</h4>
-                                                <hr/>
-                                                <p>Ваше предложение в раздел <strong>{{notify.data.section}}</strong> успешно доваблено</p>
-                                                <p>Дата создания: {{ notify.created_at }}</p>
-                                            </div>
-
                                             <div v-if="notify.type === offerDelete">
                                                 <h4 class="alert-heading">Удаление предложения</h4>
                                                 <hr/>
                                                 <p>Вы удалили предложение из раздела <strong>{{notify.data.section}}</strong></p>
                                                 <p>Дата удаления: {{ notify.created_at }}</p>
+                                            </div>
+
+                                            <div v-if="notify.type === newOffer">
+                                                <h4 class="alert-heading">Новое предложение</h4>
+                                                <hr/>
+                                                <p>Добавлено предложение в раздел <strong>{{notify.data.section}}</strong>.</p>
+                                                <p>Дата создания: {{ notify.created_at }}</p>
                                             </div>
 
                                             <div v-if="notify.type === offerRestore">

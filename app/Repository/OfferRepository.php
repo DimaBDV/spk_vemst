@@ -64,9 +64,10 @@ class OfferRepository extends CoreRepository
 
         $result = $this->startConditions()
             ->withTrashed()
-            ->where('id', $id)
-            ->get()
-            ->first();
+            ->find($id);
+//            ->where('id', $id)
+//            ->get()
+//            ->first();
 
         return $result;
     }

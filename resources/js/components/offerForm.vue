@@ -208,7 +208,7 @@
                 <p class="mb-2"><i class="fas fa-upload"></i> Загрузка файлов </p>
                 <div class="custom-file" >
                     <!-- FIXME: Очистка поля ввода путём переустановки type="" для возможности загрузить один и тот же файл -->
-                    <input :type="input_file_type" name="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp" v-on:change="fileInputChange">
+                    <input :type="input_file_type" name="file" class="custom-file-input" id="customFile" multiple aria-describedby="UploadHelp" v-on:change="fileInputChange($event)">
                     <label class="custom-file-label" for="customFile">Выберите файлы</label>
                     <small id="UploadHelp" class="form-text text-muted pt-3">Для выбора прикрепляемых файлов кликните по полю выше. Загрузка файлов на сервер будет произведена автоматически. Максимальный размер одного файла 30Мб</small>
                 </div>
@@ -417,7 +417,7 @@
             /**
              * База для загрузки файлов, проверяет инпут и при изменении начинает работать
              */
-            async fileInputChange(){
+            async fileInputChange(event){
 
                 this.button_disabled = true; //Блокируем кнопку отправки пока идёт завгрузка
 

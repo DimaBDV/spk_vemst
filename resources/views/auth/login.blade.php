@@ -102,8 +102,11 @@
                         <hr/>
                         <div class="container-fluid">
                             <h3 class="text-center">Впервые здесь?</h3>
-                            <a href="{{route('register')}}" class="btn btn-outline-primary btn-block">
+                            <a id="registerHelp" href="{{route('register')}}" class="btn btn-outline-primary btn-block">
                                 <i class="fas fa-plus"></i> Регистрация </a>
+                            <small id="registerHelp" class="form-text text-muted">
+                                После регистрации Вам будут доступны все функции сервиса
+                            </small>
                         </div>
                     </div>
                 </div>

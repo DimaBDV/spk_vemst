@@ -74,7 +74,7 @@
                 {{ config('app.name', 'Laravel') }}
             </a>
 
-            @if ( !Auth::user()->unreadNotifications->isEmpty() )
+            @if (!Auth::guest() && !Auth::user()->unreadNotifications->isEmpty() )
                 <a href="{{route('home')}}" class="nav-item nav-link text-white ml-2">
                     <i class="fas fa-bell"></i>
                 </a>
